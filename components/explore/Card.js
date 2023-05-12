@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Title, Paragraph } from 'react-native-paper';
-import { Text,View, StyleSheet, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import StarRating from 'react-native-star-rating-widget';
 import { Chip } from 'react-native-paper';
@@ -13,11 +13,12 @@ const BusinessCard = (props) => {
 
     useEffect(() => {
         console.log(props?.category)
-        // props.category == ""
+
+
     }, [])
 
-    // const [isFilled,setIsFilled] = useState(false)
-    const [category,setCategory] = useState('salon')
+    const [isFilled, setIsFilled] = useState(false)
+    const [category, setCategory] = useState('salon')
 
     return (
         <TouchableWithoutFeedback
@@ -41,9 +42,9 @@ const BusinessCard = (props) => {
 
 
                         />
-                        <Chip icon= {(props?.category == "salon") ? "stethoscope":"stethoscope" } style={{ height: 28, width: 80, backgroundColor: (props.category === 'salon' ) ? '#57B9BB': '#ff7cb5'  , }}
+                        <Chip icon={(props?.category == "salon") ? "stethoscope" : "stethoscope"} style={{ height: 28, width: 80, backgroundColor: (props.category === 'salon') ? '#57B9BB' : '#ff7cb5', }}
                             onPress={() => console.log('Pressed')
-                        }>
+                            }>
                             <Text style={{ color: 'white' }}>{props.category == "salon" ? "Salon" : "Doctor"}</Text>
                         </Chip>
 
@@ -51,12 +52,12 @@ const BusinessCard = (props) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                         <Title>{props.title}</Title>
-                        {/* <TouchableOpacity style = {{marginTop:10}} onPress={() => {
+                        <TouchableOpacity style={{ marginTop: 10 }} onPress={() => {
                             setIsFilled(!isFilled)
                         }}>
-                            <Ionicons name= {isFilled ? "heart" : "heart-outline"} size={28} color="red" />
+                            <Ionicons name={isFilled ? "heart" : "heart-outline"} size={28} color="red" />
 
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                     </View>
 
                     <Paragraph>{props.address}</Paragraph>

@@ -64,7 +64,7 @@ const BusinessProfile = (props) => {
 
                 // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 
-                console.log(reviews);
+                console.log("reviews", "reviews");
             })
             .catch((err) => {
                 console.log(err);
@@ -100,6 +100,8 @@ const BusinessProfile = (props) => {
     );
 
     const SecondRoute = () => (
+
+
 
         <ScrollView>
             <View style={{ flex: 1, alignItems: 'center' }} >
@@ -239,15 +241,15 @@ const BusinessProfile = (props) => {
                         </View>
                     </View>) : null}
 
-                {reviews ?<View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
+                {reviews ? <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
                     <ScrollView>
                         {reviews.map((item, index) => (
                             <ReviewCard
-                                customerEmail={item.name}
-                                customerName = {item.name}
-                                customerReview = {item.name}
-                                businessTitle = {item.name}
-                                rating = {item.rating}
+                                customerEmail={item.customerEmail}
+                                customerName={item.customerName}
+                                customerReview={item.customerReview}
+                                businessTitle={item.business_name}
+                                rating={item.rating}
                                 time={item.time}
                                 onPress={() => {
                                     console.log('Pressed')
@@ -257,9 +259,9 @@ const BusinessProfile = (props) => {
 
                     </ScrollView>
                 </View>
-                : 
-                <View style =  {{display: 'flex', justifyContent: 'center', alignItems: 'center'}}> No Reviews to show </View>}
-                
+                    :
+                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> No Reviews to show </View>}
+
                 <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between',

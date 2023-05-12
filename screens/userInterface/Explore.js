@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions, ScrollView, StatusBar, Text } from "react-native";
-import { Button, Searchbar } from 'react-native-paper'
+import { Button, Searchbar, RadioButton } from 'react-native-paper'
 import BusinessCard from '../../components/explore/Card.js';
 import { Ionicons } from '@expo/vector-icons'
 import { FAB } from 'react-native-paper';
 import { db, auth, } from "../../firebase/FirebaseConfig.js";
-import { doc, getDoc, setDoc, collection, getDocs, where, query,limit } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, where, query, limit } from "firebase/firestore";
 // import firestore from '@react-native-firebase/firestore';
-import { RadioButton } from 'react-native-paper';
 
 
 
@@ -314,7 +313,7 @@ function Explore(props) {
         "Zhob",
         "Other"]
 
-    const [selectedCity,setSelectedCity] = useState(); 
+    const [selectedCity, setSelectedCity] = useState();
 
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -324,14 +323,13 @@ function Explore(props) {
 
 
     const collectionRef = collection(db, "business_users")
-
     const getQueryResult = async () => {
         let q
-        checked == 'first' ?  
+        checked == 'first' ?
             q = query(collectionRef, where("name", "==", searchQuery))
-        :
+            :
             q = query(collectionRef, where("category", "==", searchQuery))
-        
+
         await getDocs(q)
             .then((res) => {
 
@@ -351,7 +349,7 @@ function Explore(props) {
 
     useEffect(() => {
         props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
-    },[])
+    }, [])
 
 
     useEffect(() => {
@@ -361,7 +359,7 @@ function Explore(props) {
     }, [searchQuery]);
 
     return (
-        
+
         <View style={styles.container}>
             <View style={styles.searchView}>
                 <View style={styles.searchBar}>
@@ -426,7 +424,7 @@ function Explore(props) {
                                     description={item.business_description}
                                     category={item.category}
                                     image={item.image}
-                                    rating = {item.rating}
+                                    rating={item.rating}
                                     address={item.business_address}
                                     onPress={() => {
                                         console.log('Pressed')

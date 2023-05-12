@@ -22,8 +22,9 @@ import PaymentCardForm from '../screens/userInterface/PaymentCardForm.js';
 import Feedback from '../screens/userInterface/Feedback.js';
 import AdminStack from '../Navigation/AdminUIStack.js';
 import BusinessStack from '../Navigation/BusinessUIStack.js';
-import MainScreen from  '../screens/userInterface/MainScreen.js'
+import MainScreen from '../screens/userInterface/MainScreen.js'
 import OnBoardingScreen from '../screens/userInterface/OnBoardingScreen.js'
+import Reviews from '../screens/userInterface/Reviews.js'
 
 // import TimeSlot from '../components/appointments/TimeSlotCreator.js';
 
@@ -32,7 +33,7 @@ import OnBoardingScreen from '../screens/userInterface/OnBoardingScreen.js'
 
 function MyStack() {
     return (
-        
+
         <Stack.Navigator
             initialRouteName="OnBoardingScreen"
             screenOptions={{
@@ -41,21 +42,21 @@ function MyStack() {
                 headerShown: false,
             }}
         >
-            
+
             <Stack.Screen
                 name="Home"
                 component={TabNavigation}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Signup"
                 component={Signup}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="HomeScreen"
                 component={HomeScreen}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Explore"
@@ -73,12 +74,12 @@ function MyStack() {
             <Stack.Screen
                 name="Settings"
                 component={Settings}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Login"
                 component={Login}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Map"
@@ -99,23 +100,23 @@ function MyStack() {
             <Stack.Screen
                 name="EditProfile"
                 component={EditProfile}
-                options={{headerShown:true}}
+                options={{ headerShown: true }}
 
             />
             <Stack.Screen
                 name="Payment"
                 component={Payment}
-                options={{headerShown:true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="PaymentCardForm"
                 component={PaymentCardForm}
-                options={{headerShown:true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="Feedback"
                 component={Feedback}
-                options={{headerShown:true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="AdminStack"
@@ -139,14 +140,19 @@ function MyStack() {
                 }}
             />
             <Stack.Screen
+                name="Reviews"
+                component={Reviews}
+                screenOptions={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
                 name="OnBoardingScreen"
                 component={OnBoardingScreen}
                 screenOptions={{
                     headerShown: false,
                 }}
             />
-            
-        
 
         </Stack.Navigator>
     );

@@ -6,7 +6,7 @@ import { FontAwesome, EvilIcons } from "@expo/vector-icons/"
 import { db, auth } from '../../firebase/FirebaseConfig.js'
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import {MaterialIndicator,} from 'react-native-indicators';
+import { MaterialIndicator, } from 'react-native-indicators';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { CredentialsContext } from '../../components/CredentialsContext.js';
@@ -67,9 +67,9 @@ function Settings(props) {
     }, [])
 
 
-// if(loading) return <SafeAreaView style={styles.container}>
-//     <MaterialIndicator color='black'/>
-// </SafeAreaView>
+    // if(loading) return <SafeAreaView style={styles.container}>
+    //     <MaterialIndicator color='black'/>
+    // </SafeAreaView>
     return (
         <SafeAreaView style={styles.container}>
             {loading === false ? <>
@@ -184,17 +184,17 @@ function Settings(props) {
 
 
                     <TouchableRipple
-                    onPress = {() => console.log('pressed')}
-                >
-                    <View style = {styles.menuItem}>
-                        <Icons
-                            name = "rate-review"
-                            size = {25}
-                            color= '#000'
+                        onPress={() => { props.navigation.navigate('Reviews') }}
+                    >
+                        <View style={styles.menuItem}>
+                            <Icons
+                                name="rate-review"
+                                size={25}
+                                color='#000'
                             />
-                        <Text style={styles.menuItemText}>Reviews</Text>
-                    </View>
-                </TouchableRipple>
+                            <Text style={styles.menuItemText}>Reviews</Text>
+                        </View>
+                    </TouchableRipple>
 
 
                     {/* <TouchableRipple
@@ -240,8 +240,8 @@ function Settings(props) {
                         </View>
                     </TouchableRipple>
 
-                </View> 
-                </>
+                </View>
+            </>
                 :
                 <MaterialIndicator color='black' />}
 
