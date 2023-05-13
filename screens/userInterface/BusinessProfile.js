@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Dimensions, ScrollView, useWindowDimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TextInput, useWindowDimensions, TouchableOpacity, Alert } from 'react-native';
 import { ImageSlider } from "react-native-image-slider-banner";
-import { Caption, Title, Divider, TextInput, Paragraph, ProgressBar, Subheading, Button } from 'react-native-paper';
+import { Caption, Title, Divider, Paragraph, ProgressBar, Subheading, Button } from 'react-native-paper';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign, Ionicons } from "@expo/vector-icons/"
 import StarRating from 'react-native-star-rating-widget';
@@ -19,9 +19,25 @@ const BusinessProfile = (props) => {
     const [showReview, setShowReview] = useState(true)
     const [reviewText, setReviewText] = useState('');
     const [reviewRating, setReviewRating] = useState(0);
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState([{ customer_email: 'abdullahprince7717', customer_name: 'Abdullah Ali', customer_review: 'asgdjaskbdbaj', business_title: 'Hameed clinic', rating: 5, time: moment().format('MMMM Do YYYY'), business_email: props?.route?.params?.data?.email }]);
     const [reviewsCount, setReviewsCount] = useState(0);
     const [reviewsAverage, setReviewsAverage] = useState(0);
+    let fiveRating = reviews.filter((item) => item.rating == 5).length
+    fiveRating = reviews.length == 0 ? 0 : (fiveRating / reviews.length)
+
+    let fourRating = reviews.filter((item) => item.rating == 4).length
+    fourRating = reviews.length == 0 ? 0 : (fourRating / reviews.length)
+
+    let threeRating = reviews.filter((item) => item.rating == 3).length
+    threeRating = reviews.length == 0 ? 0 : (threeRating / reviews.length)
+
+    let twoRating = reviews.filter((item) => item.rating == 2).length
+    twoRating = reviews.length == 0 ? 0 : (twoRating / reviews.length)
+
+    let oneRating = reviews.filter((item) => item.rating == 1).length
+    oneRating = reviews.length == 0 ? 0 : (oneRating / reviews.length)
+
+
 
     const [index, setIndex] = useState(0);
     const [rating, setRating] = useState(0);
@@ -30,6 +46,7 @@ const BusinessProfile = (props) => {
     const [queryResult, setQueryResult] = useState([]);
     const servicesRef = collection(db, "services");
     const reviewsRef = collection(db, "reviews");
+
 
     const time = moment().format('MMMM Do YYYY');
 
@@ -64,7 +81,8 @@ const BusinessProfile = (props) => {
 
                 // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 
-                console.log("reviews", "reviews");
+                console.log("reviews",
+                    reviews);
             })
             .catch((err) => {
                 console.log(err);
@@ -74,7 +92,7 @@ const BusinessProfile = (props) => {
 
     useEffect(() => {
         getServices();
-        getReviews();
+        // getReviews();
         console.log(props?.route?.params?.data)
         // console.log(services)
         // console.log(data.name)
@@ -117,7 +135,7 @@ const BusinessProfile = (props) => {
 
                         <View style={{ flexDirection: 'row', margin: 3, alignItems: 'center', }}>
                             <Text style={{ marginRight: 0, fontSize: 30 }}>
-                                0
+
                             </Text>
                             <Text style={{ marginTop: 10, fontSize: 20 }}>
                                 /5
@@ -125,15 +143,14 @@ const BusinessProfile = (props) => {
                         </View>
                         <StarRating
                             rating={rating}
-                            onChange={setRating}
-                            disabled={true}
+                            onChange={() => console.log("Pressed")}
                             starSize={20}
                             color="orange"
                             style={{ margin: 5 }}
 
                         />
                         <Text style={{ marginTop: 10, fontSize: 10 }}>
-                            Based on 25 reviews
+                            Based on {reviews.length} reviews
                         </Text>
                     </View>
 
@@ -145,10 +162,10 @@ const BusinessProfile = (props) => {
                                 5 <Ionicons color="orange" name="star" size={16} />
                             </Text>
 
-                            <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={1} color='orange' />
+                            <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={fiveRating} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                5
+                                {reviews.filter((item) => item.rating == 5).length}
                             </Text>
                         </View>
 
@@ -160,7 +177,7 @@ const BusinessProfile = (props) => {
                             <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={0.25} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                1
+                                {reviews.filter((item) => item.rating == 4).length}
                             </Text>
 
                         </View>
@@ -173,7 +190,7 @@ const BusinessProfile = (props) => {
                             <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={0.9} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                9
+                                {reviews.filter((item) => item.rating == 3).length}
                             </Text>
 
                         </View>
@@ -186,7 +203,7 @@ const BusinessProfile = (props) => {
                             <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={0.8} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                8
+                                {reviews.filter((item) => item.rating == 2).length}
                             </Text>
 
                         </View>
@@ -199,7 +216,7 @@ const BusinessProfile = (props) => {
                             <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={0.5} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                5
+                                {reviews.filter((item) => item.rating == 5).length}
                             </Text>
 
                         </View>
@@ -209,31 +226,33 @@ const BusinessProfile = (props) => {
                 {/* END of Overall rating card */}
 
                 {showReview === true ? (
-                    <View style={{ height: "15%", width: '90%', borderColor: 'black', borderWidth: 0.5, borderRadius: 10, padding: 10 }} >
+                    <View style={{ height: "25%", width: '90%', borderColor: 'black', borderWidth: 0.5, borderRadius: 10, padding: 10 }} >
                         <View style={{}}>
                             <StarRating
-                                rating={rating}
-                                onChange={setRating}
+                                rating={reviewRating}
+                                onChange={setReviewRating}
                                 maxStars={5}
                                 starSize={20}
                                 color="orange"
-                                style={{ margin: 5 }}
+                                style={{ margin: 5, marginLeft: 0 }}
                             />
                             <TextInput
-                                // label="Review"
-                                activeUnderlineColor='orange'
-                                style={{ height: 40 }}
-                                multiline={true}
+                                placeholder="Review"
+                                placeholderTextColor={"#000"}
                                 value={reviewText}
                                 onChangeText={text => setReviewText(text)}
+                                style={{ height: 40 }}
+                                multiline={true}
                             />
+
                             <Button mode="outlined" style={{ marginTop: 10 }} labelStyle={{ color: 'black' }} onPress={() => {
                                 console.log('Pressed')
-                                if (reviewText == '') {
+                                if (reviewText.length === 0) {
                                     Alert.alert('Please enter your review');
                                 }
                                 else {
                                     setShowReview(!showReview)
+
                                 }
                             }}>
                                 Submit
@@ -250,11 +269,8 @@ const BusinessProfile = (props) => {
                                 customerReview={item.customerReview}
                                 businessTitle={item.business_name}
                                 rating={item.rating}
-                                time={item.time}
-                                onPress={() => {
-                                    console.log('Pressed')
-                                    props.navigation.navigate('Booking', { service: services[index], data: props?.route?.params?.data })
-                                }}
+                                time={moment().format('YYYY-MM-DD')}
+
                             />))}
 
                     </ScrollView>
@@ -262,7 +278,7 @@ const BusinessProfile = (props) => {
                     :
                     <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> No Reviews to show </View>}
 
-                <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
+                {/* <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
                     <View style={{
                         flexDirection: 'row', justifyContent: 'space-between',
                         alignItems: 'center',
@@ -277,8 +293,8 @@ const BusinessProfile = (props) => {
 
 
                     <StarRating
-                        rating={rating}
-                        onChange={setRating}
+                        // rating={rating}
+                        // onChange={setRating}
                         maxStars={5}
                         starSize={20}
                         color="orange"
@@ -302,49 +318,8 @@ const BusinessProfile = (props) => {
 
                 </View>
 
-                <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
+                <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} /> */}
 
-                <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
-                    <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}>
-                        <Text style={{ marginLeft: 10, fontSize: 19, fontWeight: 'bold', }}>
-                            Abdullah Ali
-                        </Text>
-                        <Text style={{ marginRight: 10 }}>
-                            {time}
-                        </Text>
-                    </View>
-
-
-                    <StarRating
-                        rating={rating}
-                        onChange={setRating}
-                        maxStars={5}
-                        starSize={20}
-                        color="orange"
-                        style={{ margin: 5 }}
-                    />
-
-                    <Subheading style={{ marginLeft: 10 }}>
-                        Service name
-                    </Subheading>
-
-                    <Caption style={{ marginLeft: 15, }} >
-                        By Business Name
-                    </Caption>
-
-                    <Paragraph style={{ marginLeft: 10, backgroundColor: 'white', borderRadius: 10, paddingLeft: 5 }} >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec eget ex vitae nunc tincidunt egestas.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec eget ex vitae nunc tincidunt egestas.
-                    </Paragraph>
-
-                </View>
-
-                <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
 
             </View>
         </ScrollView>

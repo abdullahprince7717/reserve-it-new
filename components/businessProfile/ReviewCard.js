@@ -7,7 +7,7 @@ import moment from 'moment';
 function ReviewCard(props) {
 
     return (
-        <View>
+        <View style={{ height: 500 }}>
             <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between',
@@ -45,7 +45,7 @@ function ReviewCard(props) {
 
             </View>
 
-            <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
+            {/* <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} /> */}
         </View>
     )
 }
