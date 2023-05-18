@@ -15,57 +15,57 @@ function TabNavigation(props) {
             initialRouteName="Home"
             activeColor='#fff'
             inactiveColor="#000"
-            barStyle={{ 
+            barStyle={{
                 backgroundColor: '#57B9BB',
                 position: 'absolute',
-                // bottom: 10,
-                // left: 10,
-                // right: 10,
-                height: 55,
+                bottom: 10,
+                left: 10,
+                right: 10,
+                height: 65,
                 elevation: 1,
-                // borderRadius: 20,
+                borderRadius: 20,
                 borderColor: 'grey',
-                borderWidth:0.5,
+                borderWidth: 0.5,
                 overflow: 'hidden',
-                // borderTopLeftRadius: 20,
-                // borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
             }}
         >
 
 
-            <Tab.Screen name="Appointments" 
-            component={Appointments}
-            options={{
-                tabBarLabel: 'Appointments',
-                tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="calendar-month-outline" color={color} size={26} />
-                ), 
-            }}
-            
+            <Tab.Screen name="Appointments"
+                component={Appointments}
+                options={{
+                    tabBarLabel: 'Appointments',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="calendar-month-outline" color={color} size={26} />
+                    ),
+                }}
+
             />
 
-            <Tab.Screen name="Checkout" 
-            component={Checkout}
-            options={{
-                tabBarLabel: 'Checkout',
-                tabBarIcon: ({ color }) => (
-                    <FontAwesome5 name="money-check-alt" color={color} size={26} />
-                ), 
-            }}
+            <Tab.Screen name="Checkout"
+                component={Checkout}
+                options={{
+                    tabBarLabel: 'Checkout',
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome5 name="money-check-alt" color={color} size={26} />
+                    ),
+                }}
             />
 
-            <Tab.Screen name="Settings" 
-            component={Settings}
-            options={{
-                tabBarLabel: 'Settings',
-                tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="cog-outline" color={color} size={26} />
-                ), 
-            }}
+            <Tab.Screen name="Settings"
+                component={Settings}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="cog-outline" color={color} size={26} />
+                    ),
+                }}
             />
-        
+
         </Tab.Navigator>
-    
+
 
     );
 }

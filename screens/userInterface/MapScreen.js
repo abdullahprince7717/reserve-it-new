@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -11,9 +11,9 @@ import {
     Dimensions,
     Platform,
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 
-import {Ionicons} from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Fontisto from "react-native-vector-icons/Fontisto";
 // import { db, auth, } from "../../firebase/FirebaseConfig.js";
@@ -28,10 +28,10 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
 
-export default function MapScreen(props){
+export default function MapScreen(props) {
     // const theme = useTheme();
     const [data, setData] = useState([]);
-    const [businesses,setBusiness] = useState([])
+    const [businesses, setBusiness] = useState([])
     const Images = [
         { image: require("../../assets/map-marker.png") },
         { image: require("../../assets/logo.png") },
@@ -41,7 +41,7 @@ export default function MapScreen(props){
 
     useEffect(() => {
         console.log(props?.route?.params?.data)
-        if(!props?.route?.params?.data) return;
+        if (!props?.route?.params?.data) return;
         // {
         //     coordinate: {
         //         latitude: 22.6293867,
@@ -57,8 +57,8 @@ export default function MapScreen(props){
         props.route.params.data.map(item => {
             let av = {
                 coordinate: {
-                    latitude: item.latitude?item.latitude:0,
-                    longitude: item.longitude?item.longitude:0,
+                    latitude: item.latitude ? item.latitude : 0,
+                    longitude: item.longitude ? item.longitude : 0,
                 },
                 title: item.business_name,
                 business_description: item.business_description,
@@ -75,57 +75,57 @@ export default function MapScreen(props){
                 email: item?.email,
                 instagram: item?.instagram,
                 facebook: item?.facebook,
-                monday:{
+                monday: {
                     day: item?.monday?.day,
                     isOpen: item?.monday?.isOpen,
                     startTime: item?.monday?.startTime,
                     endTime: item?.monday?.endTime,
                 },
-                tuesday:{
+                tuesday: {
                     day: item?.tuesday?.day,
                     isOpen: item?.tuesday?.isOpen,
                     startTime: item?.tuesday?.startTime,
                     endTime: item?.tuesday?.endTime,
                 },
-                wednesday:{
+                wednesday: {
                     day: item?.wednesday?.day,
                     isOpen: item?.wednesday?.isOpen,
                     startTime: item?.wednesday?.startTime,
                     endTime: item?.wednesday?.endTime,
                 },
-                thursday:{
+                thursday: {
                     day: item?.thursday?.day,
                     isOpen: item?.thursday?.isOpen,
                     startTime: item?.thursday?.startTime,
                     endTime: item?.thursday?.endTime,
                 },
-                friday:{
+                friday: {
                     day: item?.friday?.day,
                     isOpen: item?.friday?.isOpen,
                     startTime: item?.friday?.startTime,
                     endTime: item?.friday?.endTime,
                 },
-                saturday:{
+                saturday: {
                     day: item?.saturday?.day,
                     isOpen: item?.saturday?.isOpen,
                     startTime: item?.saturday?.startTime,
                     endTime: item?.saturday?.endTime,
                 },
-                sunday:{
+                sunday: {
                     day: item?.sunday?.day,
                     isOpen: item?.sunday?.isOpen,
                     startTime: item?.sunday?.startTime,
                     endTime: item?.sunday?.endTime,
                 }
-                    
+
 
 
             }
             temp.push(av);
         })
         setData(temp)
-    },[])
-    
+    }, [])
+
 
     const markers = [
         {
@@ -308,9 +308,9 @@ export default function MapScreen(props){
                 initialRegion={state.region}
                 style={styles.container}
                 provider={PROVIDER_GOOGLE}
-                // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
+            // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
             >
-                {data.map((marker, index) => {
+                {data?.length ? data?.map?.((marker, index) => {
                     const scaleStyle = {
                         transform: [
                             {
@@ -318,11 +318,14 @@ export default function MapScreen(props){
                             },
                         ],
                     };
+                    console.log("market ====>", marker)
                     return (
-                        <MapView.Marker
+                        <Marker
                             key={index}
                             coordinate={marker.coordinate}
                             onPress={(e) => onMarkerPress(e)}
+                            title="My market"
+                            description="This is my market that I am looking for"
                         >
                             <Animated.View style={[styles.markerWrap]}>
                                 <Animated.Image
@@ -331,9 +334,9 @@ export default function MapScreen(props){
                                     resizeMode="cover"
                                 />
                             </Animated.View>
-                        </MapView.Marker>
+                        </Marker>
                     );
-                })}
+                }) : <></>}
             </MapView>
             {/* <View style={styles.searchBox}>
                 <TextInput
@@ -403,11 +406,11 @@ export default function MapScreen(props){
                 {data.map((marker, index) => (
                     <View style={styles.card} key={index}>
                         <Image
-                            source={{uri: marker.image}}
+                            source={{ uri: marker.image }}
                             style={styles.cardImage}
                             resizeMode="cover"
                         />
-                        {console.log(marker.image)}
+                        {/* {console.log(marker.image)} */}
                         <View style={styles.textContent}>
                             <Text numberOfLines={1} style={styles.cardtitle}>
                                 {marker.title}
@@ -421,9 +424,10 @@ export default function MapScreen(props){
 
                             <View style={styles.button}>
                                 <TouchableOpacity
-                                    onPress={() => { props.navigation.navigate("BusinessProfile",{data: data[index]}) 
-                                                    console.log(data[index])
-                                }}
+                                    onPress={() => {
+                                        props.navigation.navigate("BusinessProfile", { data: data[index] })
+                                        console.log(data[index])
+                                    }}
                                     style={[
                                         styles.signIn,
                                         {

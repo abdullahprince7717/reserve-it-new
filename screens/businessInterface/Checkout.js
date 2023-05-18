@@ -10,9 +10,6 @@ import { AppointmentContext } from '../../global/AppointmentContext.js';
 import { db, auth, storage } from '../../firebase/FirebaseConfig.js'
 import { doc, setDoc, addDoc } from 'firebase/firestore';
 
-
-
-
 export default function Checkout(props) {
 
     const [total, setTotal] = useState();
@@ -39,22 +36,22 @@ export default function Checkout(props) {
         })
             .then(() => {
                 // onToggleSnackBar();
-                appointmentCart.length > 0 ? 
-                appointmentCart.map((item, index) => {
-                    const appointmentDoc = doc(db, "appointments", item.id );
-                    console.log('item', item)
-                    setDoc(appointmentDoc, {
+                appointmentCart.length > 0 ?
+                    appointmentCart.map((item, index) => {
+                        const appointmentDoc = doc(db, "appointments", item.id);
+                        console.log('item', item)
+                        setDoc(appointmentDoc, {
                             status: {
                                 is_cancelled: false,
                                 is_completed: true,
                                 is_pending: false,
                             },
                         }, { merge: true })
-                })
-    
-                : 
+                    })
 
-                setServiceCart([]);
+                    :
+
+                    setServiceCart([]);
                 setAppointmentCart([]);
 
             })
@@ -80,7 +77,6 @@ export default function Checkout(props) {
 
     useEffect(() => {
         console.log(appointmentCart)
-        // 
 
     }, [appointmentCart]);
 
@@ -193,7 +189,7 @@ export default function Checkout(props) {
                     onPress={() => {
                         (serviceCart.length > 0 || appointmentCart.length > 0) ? uploadData() : alert("Please add items to cart");
                     }}
-                    style={{ height: 50, justifyContent: 'center', borderRadius: 20, color: '#fff', width: '100%' }}>
+                    style={{ height: 50, justifyContent: 'center', borderRadius: 20, color: '#fff', width: '100%', backgroundColor: '#57B9BB', }}>
 
                     Checkout
                 </Button>
@@ -225,7 +221,6 @@ const styles = StyleSheet.create({
 
     inputField: {
         flex: 0.08,
-        // backgroundColor: '#000',
         margin: 15,
     },
 
@@ -238,8 +233,12 @@ const styles = StyleSheet.create({
         flex: 0.06,
         justifyContent: 'center',
         margin: 15,
-        // backgroundColor: '#000',
-        position: 'absolute', top: 700, left: 10, right: 10, bottom: 40, justifyContent: 'center', alignItems: 'center'
-
+        position: 'absolute',
+        top: 650,
+        left: 10,
+        right: 10,
+        bottom: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 })

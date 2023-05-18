@@ -121,35 +121,35 @@ function MyStack() {
             <Stack.Screen
                 name="AdminStack"
                 component={AdminStack}
-                screenOptions={{
+                options={{
                     headerShown: false,
                 }}
             />
             <Stack.Screen
                 name="BusinessStack"
                 component={BusinessStack}
-                screenOptions={{
+                options={{
                     headerShown: false,
                 }}
             />
             <Stack.Screen
                 name="MainScreen"
                 component={MainScreen}
-                screenOptions={{
+                options={{
                     headerShown: false,
                 }}
             />
             <Stack.Screen
                 name="Reviews"
                 component={Reviews}
-                screenOptions={{
-                    headerShown: false,
+                options={{
+                    headerShown: true,
                 }}
             />
             <Stack.Screen
                 name="OnBoardingScreen"
                 component={OnBoardingScreen}
-                screenOptions={{
+                options={{
                     headerShown: false,
                 }}
             />

@@ -55,11 +55,7 @@ const SignUp = ({ navigation }) => {
   }, []);
 
 
-  const storeData = (userDoc, appointmentsDoc, reviewsDoc, complaintsDoc,) => {
-
-  }
-
-
+  const storeData = (userDoc, appointmentsDoc, reviewsDoc, complaintsDoc,) => { }
   const signUpWithFacebook = () => {
 
     // const provider = new FacebookAuthProvider();
@@ -122,6 +118,8 @@ const SignUp = ({ navigation }) => {
           business_email: '',
           client_email: email,
           appointment_id: '',
+          created_at: '',
+          updated_at: '',
         }
 
         const complaints = {
@@ -147,7 +145,6 @@ const SignUp = ({ navigation }) => {
 
         setDoc(appointmentsDoc, appointments)
           .then(() => {
-            console.log("appointments created Successfully")
           })
           .catch((error) => {
             alert(error.message)
@@ -155,7 +152,6 @@ const SignUp = ({ navigation }) => {
 
         setDoc(reviewsDoc, reviews)
           .then(() => {
-            console.log("reviews created Successfully")
           })
           .catch((error) => {
             alert(error.message)
@@ -163,14 +159,12 @@ const SignUp = ({ navigation }) => {
 
         setDoc(complaintsDoc, complaints)
           .then(() => {
-            console.log("complaints created Successfully")
           })
           .catch((error) => {
             alert(error.message)
           })
         setDoc(roleDoc, role)
           .then(() => {
-            console.log("role created Successfully")
           })
           .catch((error) => {
             alert(error.message)
@@ -210,7 +204,7 @@ const SignUp = ({ navigation }) => {
           <Image style={{ resizeMode: 'contain', height: '60%' }} source={require('../../assets/logo.png')} />
         </View>
         <ScrollView style={styles.downView}>
-          <Text style={styles.heading}> sdSign Up </Text>
+          <Text style={styles.heading}> Sign Up </Text>
 
           <View style={styles.form}>
             <Formik
@@ -218,7 +212,7 @@ const SignUp = ({ navigation }) => {
               onSubmit={values => console.log(values)}
               validationSchema={SignupSchema}
             >
-              {({errors, touched }) => (
+              {({ errors, touched }) => (
                 <View>
                   <TextInput
                     placeholder="Full name"
@@ -228,8 +222,8 @@ const SignUp = ({ navigation }) => {
                     style={styles.textInput}
                   />
                   {errors.name && touched.name ? (
-             <div>{errors.name}</div>
-           ) : null}
+                    <div>{errors.name}</div>
+                  ) : null}
                   <TextInput
                     placeholder="Email"
                     value={email}
@@ -267,20 +261,20 @@ const SignUp = ({ navigation }) => {
                     style={confirmPassword === password ? styles.textInput : styles.textInputError}
                   />
 
-                  
+
                 </View>
               )}
             </Formik>
             <TouchableOpacity style={styles.button}
-                    onPress={() => {
-                      signUp();
-                    }} >
-                    <Text>Sign Up </Text>
-                  </TouchableOpacity>
-            </View>
+              onPress={() => {
+                signUp();
+              }} >
+              <Text>Sign Up </Text>
+            </TouchableOpacity>
+          </View>
 
 
-            {/* <TouchableOpacity 
+          {/* <TouchableOpacity 
               style = {styles.fbButton} 
               onPress = { () => {
                 
@@ -290,22 +284,22 @@ const SignUp = ({ navigation }) => {
               <Text style = {styles.fbText}>Continue with Facebook </Text>
             </TouchableOpacity> */}
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
-              <TouchableOpacity disabled={true}>
-                <Text style={{ color: '#fff', fontSize: 15, textDecorationLine: 'underline' }}> Already have an account? </Text>
-              </TouchableOpacity>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+            <TouchableOpacity disabled={true}>
+              <Text style={{ color: '#fff', fontSize: 15, textDecorationLine: 'underline' }}> Already have an account? </Text>
+            </TouchableOpacity>
 
 
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('Pressed')
-                  navigation.navigate('Login')
-                }}
-              >
-                <Text style={{ color: '#4267B2', fontSize: 15, fontWeight: 'bold' }}>SignIn</Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('Pressed')
+                navigation.navigate('Login')
+              }}
+            >
+              <Text style={{ color: '#4267B2', fontSize: 15, fontWeight: 'bold' }}>SignIn</Text>
+            </TouchableOpacity>
 
-            </View>
+          </View>
 
 
         </ScrollView>
@@ -386,11 +380,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '90%',
     backgroundColor: '#fff',
-    marginLeft: 20,
-    marginBottom: 10,
+    // marginLeft: 20,
     height: 52,
     borderRadius: 10,
     marginBottom: 15,
+    marginTop: 20,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'

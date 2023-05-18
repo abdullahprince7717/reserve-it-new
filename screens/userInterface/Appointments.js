@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useFocusEffect } from "react";
-import { useIsFocused } from '@react-navigation/native'
+import React, { useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import {
     View,
     StyleSheet,
@@ -24,7 +24,7 @@ import Dialog from "react-native-dialog";
 
 
 function Appointments(props) {
-    const isFocused = useIsFocused()
+
     const appointmentsRef = collection(db, "appointments");
 
     const layout = useWindowDimensions();
@@ -146,18 +146,11 @@ function Appointments(props) {
         //     }
         // })
     };
-
-
-    useEffect(() => {
-        getAppointments();
-        console.log(JSON.stringify(appointments[0]))
-
-    }, []);
-    useEffect(() => {
-        if (isFocused) {
+    useFocusEffect(
+        React.useCallback(() => {
             getAppointments();
-        }
-    }, [isFocused])
+            console.log('Screen was focused');
+        }, []))
 
     const handleReload = () => {
         getAppointments();
@@ -166,11 +159,6 @@ function Appointments(props) {
 
     const FirstRoute = () => (
         <ScrollView style={styles.container}>
-            <TouchableOpacity onPress={() => {
-                handleReload();
-            }}>
-                <MaterialCommunityIcons name="reload" size={30} color="black" style={{ marginLeft: 10, }} />
-            </TouchableOpacity>
 
             <View>
                 {appointments?.map((item, index) => (
@@ -211,11 +199,6 @@ function Appointments(props) {
 
     const SecondRoute = () => (
         <ScrollView style={styles.container}>
-            <TouchableOpacity onPress={() => {
-                handleReload();
-            }}>
-                <MaterialCommunityIcons name="reload" size={30} color="black" style={{ marginLeft: 10, }} />
-            </TouchableOpacity>
             <View>
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
@@ -257,11 +240,6 @@ function Appointments(props) {
 
     const ThirdRoute = () => (
         <ScrollView style={styles.container}>
-            <TouchableOpacity onPress={() => {
-                handleReload();
-            }}>
-                <MaterialCommunityIcons name="reload" size={30} color="black" style={{ marginLeft: 10, }} />
-            </TouchableOpacity>
             <View>
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>

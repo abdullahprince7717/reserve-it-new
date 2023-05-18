@@ -135,14 +135,14 @@ const BusinessProfile = (props) => {
 
                         <View style={{ flexDirection: 'row', margin: 3, alignItems: 'center', }}>
                             <Text style={{ marginRight: 0, fontSize: 30 }}>
-
+                                {reviewsAverage.toFixed(1)}
                             </Text>
                             <Text style={{ marginTop: 10, fontSize: 20 }}>
                                 /5
                             </Text>
                         </View>
                         <StarRating
-                            rating={rating}
+                            rating={3.5}
                             onChange={() => console.log("Pressed")}
                             starSize={20}
                             color="orange"
@@ -156,7 +156,7 @@ const BusinessProfile = (props) => {
 
                     <View style={{ flexDirection: 'column', margin: 5, width: 0.4, height: '90%', backgroundColor: 'grey' }} />
 
-                    <View style={{ flexDirection: 'column', height: '90%', width: '50%', justifyContent: 'center', alignItems: 'center', }}>
+                    <View style={{ flexDirection: 'column', height: '90%', width: '50%', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', margin: 3, alignItems: 'center', }}>
                             <Text style={{ marginRight: 5 }}>
                                 5 <Ionicons color="orange" name="star" size={16} />
@@ -216,7 +216,7 @@ const BusinessProfile = (props) => {
                             <ProgressBar style={{ height: 5, width: 115, backgroundColor: 'grey' }} progress={0.5} color='orange' />
 
                             <Text style={{ marginLeft: 5 }}>
-                                {reviews.filter((item) => item.rating == 5).length}
+                                {reviews.filter((item) => item.rating == 1).length}
                             </Text>
 
                         </View>
@@ -263,62 +263,56 @@ const BusinessProfile = (props) => {
                 {reviews ? <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
                     <ScrollView>
                         {reviews.map((item, index) => (
-                            <ReviewCard
-                                customerEmail={item.customerEmail}
-                                customerName={item.customerName}
-                                customerReview={item.customerReview}
-                                businessTitle={item.business_name}
-                                rating={item.rating}
-                                time={moment().format('YYYY-MM-DD')}
+                            <View>
+                                <View style={{ width: '100%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
+                                    <View style={{
+                                        flexDirection: 'row', justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                    }}>
+                                        <Text style={{ marginLeft: 10, fontSize: 19, fontWeight: 'bold', }}>
+                                            {item.customer_name}
+                                        </Text>
+                                        <Text style={{ marginRight: 10 }}>
+                                            {moment().format('DD/MM/YYYY')}
+                                        </Text>
+                                    </View>
 
-                            />))}
+
+                                    <StarRating
+                                        rating={rating}
+                                        onChange={() => {
+                                            console.log("Pressed")
+                                        }}
+                                        maxStars={5}
+                                        starSize={20}
+                                        color="orange"
+                                        style={{ margin: 5 }}
+                                    />
+
+                                    <Subheading style={{ marginLeft: 10 }}>
+                                        {item.service_name}
+                                    </Subheading>
+
+                                    <Caption style={{ marginLeft: 15, }} >
+                                        {item.business_title}
+                                    </Caption>
+
+                                    <Paragraph style={{ marginLeft: 10, backgroundColor: 'white', borderRadius: 10, paddingLeft: 5 }} >
+                                        {item.customer_review}
+                                    </Paragraph>
+
+                                </View>
+
+                                <Divider style={{ marginLeft: 40, height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
+
+                            </View>
+                        ))}
 
                     </ScrollView>
                 </View>
                     :
                     <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> No Reviews to show </View>}
 
-                {/* <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
-                    <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}>
-                        <Text style={{ marginLeft: 10, fontSize: 19, fontWeight: 'bold', }}>
-                            Abdullah Ali
-                        </Text>
-                        <Text style={{ marginRight: 10 }}>
-                            {time}
-                        </Text>
-                    </View>
-
-
-                    <StarRating
-                        // rating={rating}
-                        // onChange={setRating}
-                        maxStars={5}
-                        starSize={20}
-                        color="orange"
-                        style={{ margin: 5 }}
-                    />
-
-                    <Subheading style={{ marginLeft: 10 }}>
-                        Service name
-                    </Subheading>
-
-                    <Caption style={{ marginLeft: 15, }} >
-                        By Business Name
-                    </Caption>
-
-                    <Paragraph style={{ marginLeft: 10, backgroundColor: 'white', borderRadius: 10, paddingLeft: 5 }} >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec eget ex vitae nunc tincidunt egestas.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec eget ex vitae nunc tincidunt egestas.
-                    </Paragraph>
-
-                </View>
-
-                <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} /> */}
 
 
             </View>
@@ -440,7 +434,7 @@ const BusinessProfile = (props) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => {
-                            Linking.openURL(`whatsapp://send?text=${props?.route?.params?.data?.business_name}`);
+                            Linking.openURL(`whatsapp://send?text=${props?.route?.params?.data?.business_name + " " + props?.route?.params?.data?.business_phone + " " + props?.route?.params?.data?.business_email}`);
                         }}>
                             <AntDesign color="green" name="sharealt" size={40} />
                         </TouchableOpacity>

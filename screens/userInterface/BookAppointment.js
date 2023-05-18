@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, StyleSheet, StatusBar, Dimensions, Text, TouchableOpacity, Button, } from "react-native";
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import TimeSlot from '../../components/appointments/TimeSlotCreator.js';
 import moment from 'moment';
 import { db, auth } from '../../firebase/FirebaseConfig.js'
@@ -27,18 +27,51 @@ function BookAppointment(props) {
     const [data, setData] = useState([])
     const [userData, setUserData] = useState(null)
 
+    LocaleConfig.locales['en'] = {
+        monthNames: [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ],
+        monthNamesShort: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+        ],
+        dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        today: 'Today', // Label for the current day
+    };
+    LocaleConfig.defaultLocale = 'en';
+    const isDayDisabled = (day) => {
+        return day.day === 1; // Disable Mondays (Sunday is 0, Monday is 1, Tuesday is 2, and so on)
+    };
+
     useEffect(() => {
         console.log(props?.route?.params?.service)
 
-        // setService(props?.route?.params?.service)
-
         console.log(props?.route?.params?.data)
         setData(props?.route?.params?.data)
-        console.log(JSON.stringify(timeSlot))
 
         props?.route?.params?.service ? setService(props?.route?.params?.service) : setService(props?.route?.params?.appointment)
-
-        console.log(JSON.stringify(service))
 
         getUser()
 
@@ -47,9 +80,9 @@ function BookAppointment(props) {
 
 
 
-    const getUser = ()=> {
+    const getUser = () => {
         const myDoc = doc(db, "users", auth.currentUser.uid)
-        
+
         getDoc(myDoc)
             .then((snapshot) => {
 
@@ -93,15 +126,11 @@ function BookAppointment(props) {
         props?.route?.params?.service ?
 
             addDoc(appointmentCollection, appointment)
-                .then((res) => {
-                    console.log(res)
-                })
+                .then(() => { })
                 .catch((err) => {
                     console.log(err)
                 })
-
             :
-
             setDoc(appointmentDoc, appointment)
                 .then((res) => {
                     console.log(res)
@@ -172,9 +201,9 @@ function BookAppointment(props) {
             <View style={styles.servicesList}>
                 <Text style={{ fontSize: 16, marginTop: 0, fontWeight: 'normal', marginLeft: 310, marginRight: 10, }}>
                     {/* {service?.time ? service?.time : service?.service_time ? service?.service_time : timeSlot} */}
-                    { service?.service_time ? service?.service_time : timeSlot}
+                    {service?.service_time ? service?.service_time : timeSlot}
 
-                    </Text>
+                </Text>
             </View>
 
             <View style={{ borderWidth: 0.2, width: deviceWidth, marginTop: 10 }} />

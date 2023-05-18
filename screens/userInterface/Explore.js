@@ -6,12 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { FAB } from 'react-native-paper';
 import { db, auth, } from "../../firebase/FirebaseConfig.js";
 import { doc, getDoc, setDoc, collection, getDocs, where, query, limit } from "firebase/firestore";
-// import firestore from '@react-native-firebase/firestore';
-
-
-
-// import {GOOGLE_MAPS_APIKEY} from "@env";
-
+import { useFocusEffect } from '@react-navigation/native';
 
 function Explore(props) {
 
@@ -314,12 +309,10 @@ function Explore(props) {
         "Other"]
 
     const [selectedCity, setSelectedCity] = useState();
-
-
     const [searchQuery, setSearchQuery] = useState("");
     const onChangeSearch = query => setSearchQuery(query);
     const [queryResult, setQueryResult] = useState([]);
-    const [checked, setChecked] = useState('first');
+    const [checked, setChecked] = useState(props?.route?.params?.query ? 'second' : 'first');
 
 
     const collectionRef = collection(db, "business_users")
@@ -338,24 +331,26 @@ function Explore(props) {
                     id: doc.id
                 })));
 
-                // console.log("response " + res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-                // console.log("response " + res);
-                console.log(queryResult);
+                console.log(queryResult, 'queryResult');
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-    useEffect(() => {
-        props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
-    }, [])
+
+    useFocusEffect(
+        React.useCallback(() => {
+
+            props?.route?.params?.query ?
+                setSearchQuery(props?.route?.params?.query) : null
+
+        }, []))
+
 
 
     useEffect(() => {
         getQueryResult();
-        console.log(auth.currentUser.email)
-        console.log(searchQuery)
     }, [searchQuery]);
 
     return (
@@ -370,7 +365,7 @@ function Explore(props) {
                             value={searchQuery}
                             style={styles.searchBar}
                         />
-                        <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
+                        <Button mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20, backgroundColor: "#000" }}
                             onPress={() => {
                                 console.log('Pressed')
                                 getQueryResult()
@@ -405,8 +400,6 @@ function Explore(props) {
                     </View>
 
                 </View>
-
-
 
             </View>
 

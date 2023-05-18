@@ -1,77 +1,61 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView } from 'react-native'
-import ReviewCard from '../../components/businessProfile/ReviewCard'
+import React, { useState } from 'react'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
+// import ReviewCard from '../../components/businessProfile/ReviewCard'
 import { Caption, Divider, Paragraph, Subheading, } from 'react-native-paper';
 import StarRating from 'react-native-star-rating-widget';
 import moment from 'moment';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
 import { collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
+import { useFocusEffect } from '@react-navigation/native';
 
 function Reviews() {
 
-    const [reviews, setReviews] = useState([]);
     const reviewsRef = collection(db, "reviews");
     const [queryResult, setQueryResult] = useState([]);
 
     const getReviews = async () => {
-        const q = query(reviewsRef, where("customer_email", "==", auth.currentUser.email));
+        const q = query(reviewsRef, where("client_email", "==", auth.currentUser.email));
         setQueryResult(q);
         await getDocs(q)
             .then((res) => {
-                setReviews(res.docs.map((doc) => ({
+                setQueryResult(res.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id
                 })));
-
-                // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-                console.log("reviews", reviews);
+                console.log('queryResult', queryResult);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
-    useEffect(() => {
-        getReviews();
-    }, []);
-    return (
-        <View style={{ height: 500, }}>
-            <Text>My Reviews</Text>
-            {/* {reviews.length < 1 ?
-                <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
-                    <ScrollView>
-                        {reviews.map((item, index) => (
-                            <ReviewCard
-                                customerEmail={"abdullahprince7717@gmail.com"}
-                                customerName={"Abdullah Ali"}
-                                customerReview={"asgdjaskbdbaj"}
-                                businessTitle={"item.business_name"}
-                                rating={"item.rating"}
-                                time={"item.time"}
-                                onPress={() => {
-                                    console.log('Pressed')
-                                    props.navigation.navigate('Booking', { service: services[index], data: props?.route?.params?.data })
-                                }}
-                            />
-                        ))}
 
-                    </ScrollView>
-                </View>
-                :
-                <Text>No Reviews</Text>} */}
-            {/* <ReviewCard
-                customerEmail={"abdullahprince7717@gmail.com"}
-                customerName={"Abdullah Ali"}
-                customerReview={"asgdjaskbdbaj"}
-                businessTitle={"item.business_name"}
-                rating={"item.rating"}
-                time={"item.time"}
-                onPress={() => {
-                    console.log('Pressed')
-                    props.navigation.navigate('Booking', { service: services[index], data: props?.route?.params?.data })
-                }}
-            /> */}
-            <View style={{ width: '90%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
+    const collectionRef = collection(db, "business_users")
+    const getQueryResult = async () => {
+
+        let q = query(collectionRef, where("category", "==", 'salon'))
+        await getDocs(q)
+            .then((res) => {
+                setQueryResult(res.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id
+                })));
+                console.log(queryResult);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    useFocusEffect(
+        React.useCallback(() => {
+            getQueryResult();
+            getReviews();
+            console.log('Screen was focused');
+        }, []))
+    return (
+        <View style={styles.container}>
+            <Text>My Reviews</Text>
+
+            <View style={{ width: '90%', borderRadius: 5, borderWidth: 1, borderColor: '#000' }}>
                 <View style={{
                     flexDirection: 'row', justifyContent: 'space-between',
                     alignItems: 'center',
@@ -80,14 +64,14 @@ function Reviews() {
                         Abdullah Ali
                     </Text>
                     <Text style={{ marginRight: 10 }}>
-                        {time}
+                        {moment().format('MMMM Do YYYY, h:mm:ss a')}
                     </Text>
                 </View>
 
 
                 <StarRating
-                    rating={rating}
-                    onChange={setRating}
+                    rating={5}
+                    onChange={() => console.log("rating")}
                     maxStars={5}
                     starSize={20}
                     color="orange"
@@ -112,9 +96,18 @@ function Reviews() {
             </View>
 
             <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
-            {/* <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} /> */}
+
         </View>
     )
 }
 
 export default Reviews
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+})

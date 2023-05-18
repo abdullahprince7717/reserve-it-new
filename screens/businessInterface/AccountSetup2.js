@@ -1,12 +1,11 @@
 import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView, Dimensions, TouchableOpacity, Image, Alert } from 'react-native';
-import { FontAwesome, MaterialCommunityIcons, Feather, Ionicons } from "@expo/vector-icons/"
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import React, { useState, useEffect } from 'react';
-import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
+// import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
-import { collection, doc, addDoc, getDocs, setDoc } from "firebase/firestore";
-import { db, auth, storage } from '../../firebase/FirebaseConfig.js';
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from '../../firebase/FirebaseConfig.js';
 import axios from "axios"
 
 import getFileExtension from '../../utils/getFileExtension.js';
@@ -100,9 +99,6 @@ const BusinessDetails = (props) => {
             // quality: 1,
             base64: true,
         });
-
-
-
         console.log("result: " + result);
         console.log(JSON.stringify(result));
         console.log("result.uri: " + result.uri);
@@ -111,14 +107,9 @@ const BusinessDetails = (props) => {
             setImage(result);
         }
     };
-
-
-
     const deleteImage = () => {
         setImage(null);
     }
-
-
     const uploadImage = async () => {
         let extension = getFileExtension(image.uri);
         let base64 = `data:image/${extension};base64,${image.base64}`;
@@ -308,8 +299,8 @@ const BusinessDetails = (props) => {
                         console.log("Pressed SAVE")
                         // addBusinessInfo();
                         uploadImage();
-                        // props.navigation.navigate('AccountSetup3')
-                        props.navigation.navigate('AccountSetup4')
+                        props.navigation.navigate('AccountSetup3')
+                        // props.navigation.navigate('AccountSetup4')
                     }}
                 >
 
