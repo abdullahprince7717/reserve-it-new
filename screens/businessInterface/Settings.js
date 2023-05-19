@@ -1,116 +1,155 @@
-import {View,StyleSheet,SafeAreaView,StatusBar,TouchableOpacity } from "react-native";
-import{ Text, Caption, Title, TouchableRipple,} from 'react-native-paper'
+import { View, StyleSheet } from "react-native";
+import { Text, Caption, Title, TouchableRipple, } from 'react-native-paper'
+import { BusinessHoursContext } from '../../global/BusinessHoursContext.js'
+import { db, auth } from '../../firebase/FirebaseConfig.js'
+import { doc, getDoc } from 'firebase/firestore';
+import React, { useState, useEffect, useContext } from 'react';
+// import { MaterialIndicator, } from 'react-native-indicators';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icons from 'react-native-vector-icons/MaterialIcons'
 import { Ionicons } from "@expo/vector-icons/"
-import {auth} from  '../../firebase/FirebaseConfig.js'
-import { BusinessHoursContext } from '../../global/BusinessHoursContext.js'
-import React,{useContext} from 'react'
+
 
 function Settings(props) {
-    const [monday, setMonday, tuesday, setTuesday, wednesday, setWednesday, thursday, setThursday, friday, setFriday, saturday, setSaturday, sunday, setSunday] = useContext(BusinessHoursContext);
+    const [setMonday, setTuesday, setWednesday, setThursday, setFriday, setSaturday, setSunday] = useContext(BusinessHoursContext);
+
+
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext);
 
 
     const handleSignOut = () => {
         auth.signOut()
-        .then(()=>{
-            setMonday([])
-            setTuesday([])
-            setWednesday([])
-            setThursday([])
-            setFriday([])
-            setSaturday([])
-            setSunday([])
+            .then(() => {
 
-            props.navigation.replace('Login')
-        })
+                // setMonday([])
+                // setTuesday([])
+                // setWednesday([])
+                // setThursday([])
+                // setFriday([])
+                // setSaturday([])
+                // setSunday([])
+                props.navigation.replace('Login')
+                console.log("SignOut Successful");
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
+
+    useEffect(() => {
+        const myDoc = doc(db, "users", auth.currentUser.uid)
+        // const myDoc = doc(db, "users", "auth.uid")
+        getDoc(myDoc)
+            .then((snapshot) => {
+
+                if (snapshot.exists) {
+                    setUserData(snapshot.data())
+                    setLoading(false)
+                    // console.log(storedCredentials);
+
+                    console.log(myDoc)
+                }
+                else {
+                    console.log("No User Data")
+                }
+            })
+            .catch((error) => {
+                console.log(error.message)
+
+            })
+
+    }, [])
+
     return (
-        <View style = {styles.container}>
+        <View style={styles.container}>
             <View>
-                <TouchableRipple 
-                    onPress = {() => {
+                <TouchableRipple
+                    onPress={() => {
                         props.navigation.navigate('EditBusinessProfile')
                     }}
-                > 
-                    <View style = {styles.menuItem}>
-                        <Ionicons 
-                            name = "business"
-                            size = {25}
-                            color= '#57B9BB'
-                            />
+                >
+                    <View style={styles.menuItem}>
+                        <Ionicons
+                            name="business"
+                            size={25}
+                            color='#57B9BB'
+                        />
                         <Text style={styles.menuItemText}>Business Profile</Text>
                     </View>
                 </TouchableRipple>
 
                 <TouchableRipple
-                    onPress = {() => {
+                    onPress={() => {
                         console.log('pressed')
-                        {props.navigation.navigate('BusinessHours')}
+                        { props.navigation.navigate('BusinessHours') }
                     }}
                 >
-                    <View style = {styles.menuItem}>
-                        <Icon 
-                            name = "timetable"
-                            size = {25}
-                            color= '#57B9BB'
-                            />
+                    <View style={styles.menuItem}>
+                        <Icon
+                            name="timetable"
+                            size={25}
+                            color='#57B9BB'
+                        />
                         <Text style={styles.menuItemText}>Business Hours</Text>
                     </View>
                 </TouchableRipple>
 
                 <TouchableRipple
-                    onPress = {() => {
+                    onPress={() => {
                         console.log('pressed')
-                        {props.navigation.navigate('ServicesList')}
+                        { props.navigation.navigate('ServicesList') }
                     }}
                 >
-                    <View style = {styles.menuItem}>
-                        <Icons 
-                            name = "miscellaneous-services"
-                            size = {25}
-                            color= '#57B9BB'
-                            />
+                    <View style={styles.menuItem}>
+                        <Icons
+                            name="miscellaneous-services"
+                            size={25}
+                            color='#57B9BB'
+                        />
                         <Text style={styles.menuItemText}>Services</Text>
                     </View>
                 </TouchableRipple>
 
 
-                <TouchableRipple 
-                    onPress = {() => {
+                <TouchableRipple
+                    onPress={() => {
                         console.log('pressed')
                         // {props.navigation.navigate('AddPayment')}
                     }}
                 >
-                    <View style = {styles.menuItem}>
-                        <Icon 
-                            name = "credit-card"
-                            size = {25}
-                            color= '#57B9BB'
-                            />
+                    <View style={styles.menuItem}>
+                        <Icon
+                            name="credit-card"
+                            size={25}
+                            color='#57B9BB'
+                        />
                         <Text style={styles.menuItemText}>Payment</Text>
                     </View>
                 </TouchableRipple>
 
 
-                <TouchableRipple 
-                    onPress = {() => {
-                        console.log(auth.currentUser?.email +'Logged Out')
+                <TouchableRipple
+                    onPress={() => {
+                        console.log(auth.currentUser?.email + 'Logged Out')
                         handleSignOut()
                     }}
                 >
-                    <View style = {styles.menuItem}>
-                        <Icons 
-                            name = "logout"
-                            size = {25}
-                            color= '#57B9BB'
-                            />
+                    <View style={styles.menuItem}>
+                        <Icons
+                            name="logout"
+                            size={25}
+                            color='#57B9BB'
+                        />
                         <Text style={styles.menuItemText}>Logout</Text>
                     </View>
                 </TouchableRipple>
 
-                
+
 
             </View>
 
@@ -121,56 +160,56 @@ function Settings(props) {
 export default Settings;
 
 const styles = StyleSheet.create({
-container: {
-    flex: 1,
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    marginTop: 20
-},
-userInfoSection: {
-    paddingHorizontal: 20,
-    marginBottom: 5,
-    marginTop: 20
-},
-title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginLeft: 5,
-    
-},
-caption: {
-    fontSize: 14,
-    lineHeight: 14,
-    fontWeight: '500',
-    marginLeft: 10,
-    marginTop: 5,
-},
-row: {
-    flexDirection: 'row',
-    marginBottom: 10,
-},
-infoBoxWrapper: {
-    borderBottomColor: '#fff',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    height: 100,
-},
-infoBox: {
-    width: '50%',
-    alignItems: 'center',
-    justifyContent: 'center',
-},
-menuItem: {
-    flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-},
-menuItemText: {
-    color: '#777777',
-    marginLeft: 13,
-    fontWeight: '600',
-    fontSize: 19,
-    lineHeight: 26,
-},
+    container: {
+        flex: 1,
+        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        marginTop: 20
+    },
+    userInfoSection: {
+        paddingHorizontal: 20,
+        marginBottom: 5,
+        marginTop: 20
+    },
+    title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        marginLeft: 5,
+
+    },
+    caption: {
+        fontSize: 14,
+        lineHeight: 14,
+        fontWeight: '500',
+        marginLeft: 10,
+        marginTop: 5,
+    },
+    row: {
+        flexDirection: 'row',
+        marginBottom: 10,
+    },
+    infoBoxWrapper: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        borderTopColor: '#dddddd',
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        height: 100,
+    },
+    infoBox: {
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    menuItem: {
+        flexDirection: 'row',
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+    },
+    menuItemText: {
+        color: '#777777',
+        marginLeft: 13,
+        fontWeight: '600',
+        fontSize: 19,
+        lineHeight: 26,
+    },
 });

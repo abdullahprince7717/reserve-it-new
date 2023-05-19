@@ -3,13 +3,13 @@ import { TouchableRipple, } from 'react-native-paper'
 import React, { useState, useEffect, useContext } from 'react'
 import HourComponent from '../../components/businessUIComponents/BusinessDay&Hour.js'
 import { BusinessHoursContext } from '../../global/BusinessHoursContext.js';
-import {doc,setDoc} from 'firebase/firestore';
-import {db,auth} from  '../../firebase/FirebaseConfig.js'
+import { doc, setDoc } from 'firebase/firestore';
+import { db, auth } from '../../firebase/FirebaseConfig.js'
 
 
 const BusinessHours = (props) => {
 
-    const [monday,setMonday,tuesday,setTuesday,wednesday,setWednesday,thursday,setThursday,friday,setFriday,saturday,setSaturday,sunday,setSunday] = useContext(BusinessHoursContext);
+    const [monday, setMonday, tuesday, setTuesday, wednesday, setWednesday, thursday, setThursday, friday, setFriday, saturday, setSaturday, sunday, setSunday] = useContext(BusinessHoursContext);
 
     useEffect(() => {
         // console.log(props?.route?.params?.data)
@@ -45,7 +45,7 @@ const BusinessHours = (props) => {
             .then(
                 (res) => {
                     console.log("response" + res)
-                    props.navigation.navigate('Home');
+                    props.navigation.navigate('AccountSetup5');
                 })
             .catch(
                 (err) => {
@@ -57,9 +57,9 @@ const BusinessHours = (props) => {
 
             <HourComponent
                 day='Monday'
-                startTime={monday? monday.startTime :'9:00 AM'}
-                endTime={monday? monday.endTime :'5:00 PM'}
-                status={monday?.isOpen === true ? 'open' :'closed' }
+                startTime={monday ? monday.startTime : '9:00 AM'}
+                endTime={monday ? monday.endTime : '5:00 PM'}
+                status={monday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Monday' }) }
@@ -67,9 +67,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Tuesday'
-                startTime={tuesday? tuesday.startTime :'9:00 AM'}
-                endTime={tuesday? tuesday.endTime :'5:00 PM'}
-                status={tuesday?.isOpen === true ? 'open' :'closed' }
+                startTime={tuesday ? tuesday.startTime : '9:00 AM'}
+                endTime={tuesday ? tuesday.endTime : '5:00 PM'}
+                status={tuesday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Tuesday' }) }
@@ -77,9 +77,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Wednesday'
-                startTime={wednesday? wednesday?.startTime :'9:00 AM'}
-                endTime={wednesday? wednesday?.endTime :'5:00 PM'}
-                status={wednesday?.isOpen === true ? 'open' :'closed' }
+                startTime={wednesday ? wednesday?.startTime : '9:00 AM'}
+                endTime={wednesday ? wednesday?.endTime : '5:00 PM'}
+                status={wednesday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Wednesday' }) }
@@ -87,9 +87,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Thursday'
-                startTime={thursday? thursday.startTime :'9:00 AM'}
-                endTime={thursday? thursday.endTime :'5:00 PM'}
-                status={thursday?.isOpen === true ? 'open' :'closed' }
+                startTime={thursday ? thursday.startTime : '9:00 AM'}
+                endTime={thursday ? thursday.endTime : '5:00 PM'}
+                status={thursday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Thursday' }) }
@@ -97,9 +97,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Friday'
-                startTime={friday? friday.startTime :'9:00 AM'}
-                endTime={friday? friday.endTime :'5:00 PM'}
-                status={friday?.isOpen === true ? 'open' :'closed' }
+                startTime={friday ? friday.startTime : '9:00 AM'}
+                endTime={friday ? friday.endTime : '5:00 PM'}
+                status={friday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Friday' }) }
@@ -107,9 +107,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Saturday'
-                startTime={saturday? saturday.startTime :'9:00 AM'}
-                endTime={saturday? saturday.endTime :'5:00 PM'}
-                status={saturday?.isOpen === true ? 'open' :'closed'}
+                startTime={saturday ? saturday.startTime : '9:00 AM'}
+                endTime={saturday ? saturday.endTime : '5:00 PM'}
+                status={saturday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Saturday' }) }
@@ -117,9 +117,9 @@ const BusinessHours = (props) => {
             />
             <HourComponent
                 day='Sunday'
-                startTime={sunday? sunday.startTime :'9:00 AM'}
-                endTime={sunday? sunday.endTime :'5:00 PM'}
-                status={sunday?.isOpen === true ? 'open' :'closed' }
+                startTime={sunday ? sunday.startTime : '9:00 AM'}
+                endTime={sunday ? sunday.endTime : '5:00 PM'}
+                status={sunday?.isOpen === true ? 'open' : 'closed'}
                 onPress={() => {
                     console.log("Pressed")
                     { props.navigation.navigate('AccountSetup4b', { day: 'Sunday' }) }
@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center',  
-        margin:50,      
+        alignItems: 'center',
+        margin: 50,
 
     },
 

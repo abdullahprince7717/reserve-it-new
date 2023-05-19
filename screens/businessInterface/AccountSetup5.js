@@ -1,22 +1,22 @@
 import { StyleSheet, Text, View, } from 'react-native'
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '../../components/businessUIComponents/ServiceCard.js'
 import { FAB } from 'react-native-paper';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
-import { collection, getDocs,doc, setDoc,query,where } from "firebase/firestore";
-import {MaterialIcons} from '@expo/vector-icons'
+import { collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
+import { MaterialIcons } from '@expo/vector-icons'
 
 const AccountSetup5 = (props) => {
 
     const [services, setServices] = useState([]);
-    const [queryResult,setQueryResult] = useState([]);
+    const [queryResult, setQueryResult] = useState([]);
     const servicesRef = collection(db, "services");
 
     useEffect(() => {
         getServices();
         console.log(services)
         console.log(auth.currentUser.email)
-    },[])
+    }, [])
 
 
 
@@ -35,7 +35,7 @@ const AccountSetup5 = (props) => {
                 })));
 
                 // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-                
+
                 console.log(services);
             })
             .catch((err) => {
@@ -44,48 +44,48 @@ const AccountSetup5 = (props) => {
     };
 
     return (
-        <View style = {styles.container}>
-        
-        {services.length == 0 ?  
-        <View style = {{justifyContent: 'center',alignItems: 'center'}}>
-            <MaterialIcons name = "post-add" size = {100} color = '#00a680'/>
-            <Text style = {{color:"grey",fontSize:24, fontWeight:'bold'}}> Please Add at least 1 service</Text>
+        <View style={styles.container}>
 
-            </View> 
-        : 
-        services.map((item,index) => (
-            <Card 
-                title = {item.name}
-                price = {item.price}
-                duration = {item.duration}
-                onPress = {() => {
-                    console.log('pressed')
-                    {props.navigation.navigate('EditService',{data: services[index]})}
-                }}
+            {services.length == 0 ?
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <MaterialIcons name="post-add" size={100} color='#00a680' />
+                    <Text style={{ color: "grey", fontSize: 24, fontWeight: 'bold' }}> Please Add at least 1 service</Text>
 
-            />))}
+                </View>
+                :
+                services.map((item, index) => (
+                    <Card
+                        title={item.name}
+                        price={item.price}
+                        duration={item.duration}
+                        onPress={() => {
+                            console.log('pressed')
+                            { props.navigation.navigate('EditService', { data: services[index] }) }
+                        }}
+
+                    />))}
 
             <FAB
                 style={styles.fab}
-                label = "Add"
+                label="Add"
                 large
                 icon="plus"
                 onPress={() => {
                     console.log('Pressed')
                     props.navigation.navigate('AddService')
                 }}
-                color = '#fff'
+                color='#fff'
             />
 
             <FAB
                 style={styles.done}
-                label = "Done"
+                label="Done"
                 large
                 onPress={() => {
                     console.log('Pressed')
                     props.navigation.navigate('Home')
                 }}
-                color = '#fff'
+                color='#fff'
             />
 
 

@@ -88,10 +88,7 @@ const EditBusinessHours = (props) => {
             setSunday(value)
         }
 
-        // setThursday(value)
-
         props.navigation.goBack();
-        // console.log(value)
     }
 
 
@@ -143,8 +140,8 @@ const EditBusinessHours = (props) => {
                         }}
                     /> */}
 
-                    <View style={{ flexDirection: 'row', margin:0 }} >
-                        <Text style={{ fontSize: 17,marginTop:40,marginRight:10,fontWeight: 'bold'}}>Start Time: </Text>
+                    <View style={{ flexDirection: 'row', margin: 0 }} >
+                        <Text style={{ fontSize: 17, marginTop: 40, marginRight: 10, fontWeight: 'bold' }}>Start Time: </Text>
 
                         <DropDownPicker
                             open={open}
@@ -157,7 +154,7 @@ const EditBusinessHours = (props) => {
                                 backgroundColor: "#E7E7E7",
                                 borderRadius: 5,
                                 height: 55,
-                                
+
                             }}
                             containerStyle={{
                                 width: '42%',
@@ -165,7 +162,7 @@ const EditBusinessHours = (props) => {
                                 justifyContent: 'center',
                                 marginTop: 30,
                                 height: 50,
-                                
+
                             }}
                             textStyle={{
                                 fontSize: 15
@@ -178,7 +175,7 @@ const EditBusinessHours = (props) => {
                     </View>
 
                     <View style={{ flexDirection: 'row' }} >
-                        <Text style={{ fontSize: 17,marginTop:40,marginRight:15,fontWeight: 'bold'}}>End Time: </Text>
+                        <Text style={{ fontSize: 17, marginTop: 40, marginRight: 15, fontWeight: 'bold' }}>End Time: </Text>
 
                         <DropDownPicker
                             open={open1}
@@ -191,7 +188,7 @@ const EditBusinessHours = (props) => {
                                 backgroundColor: "#E7E7E7",
                                 borderRadius: 5,
                                 height: 55,
-                                
+
                             }}
                             containerStyle={{
                                 width: '42%',
@@ -199,7 +196,7 @@ const EditBusinessHours = (props) => {
                                 justifyContent: 'center',
                                 marginTop: 30,
                                 height: 50,
-                                
+
                             }}
                             textStyle={{
                                 fontSize: 15
@@ -210,8 +207,6 @@ const EditBusinessHours = (props) => {
 
                         />
                     </View>
-
-
                 </View>
 
                 <View style={{ flexDirection: 'row', margin: 20, marginBottom: 50, }}>
@@ -219,20 +214,18 @@ const EditBusinessHours = (props) => {
                         <Text style = {{fontSize:20,marginRight:10,fontWeight:'bold'}}>End Time :</Text>
                     </TimePicker> */}
                 </View>
-                
-                <View style= {{elevation:-99, width:'100%',marginTop:130}}>
-                <HourComponent
-                    day={props.route?.params?.day}
-                    // startTime={moment(startTime).format('LT')}
-                    startTime = {startTime}
-                    // endTime={moment(endTime).format('LT')}
-                    endTime={endTime}
-                    status={isOpen == true ? 'open' : 'closed'}
 
-                />
+                <View style={{ elevation: -99, width: '100%', marginTop: 130 }}>
+                    <HourComponent
+                        day={props.route?.params?.day}
+                        // startTime={moment(startTime).format('LT')}
+                        startTime={startTime}
+                        // endTime={moment(endTime).format('LT')}
+                        endTime={endTime}
+                        status={isOpen == true ? 'open' : 'closed'}
+
+                    />
                 </View>
-
-
             </View>
 
             <TouchableOpacity
