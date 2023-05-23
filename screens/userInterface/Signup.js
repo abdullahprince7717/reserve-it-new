@@ -218,23 +218,21 @@ const SignUp = ({ navigation }) => {
                     placeholder="Full name"
                     value={values.name}
                     placeholderTextColor={"#fff"}
-                    onChangeText={() => {
-                      touched = setFieldTouched('name')
-                      handleChange('name')
-                    }}
+                    onBlur={() => setFieldTouched('name')}
+                    onChangeText={handleChange('name')}
                     style={styles.textInput}
 
                   />
-                  {errors.name && touched.name ? (
-                    <Text style={{ color: 'red' }}>{errors.name}</Text>
-                  ) : <Text style={{ color: '#fff' }} >no way</Text>}
+                  {touched.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
                   <TextInput
                     placeholder="Email"
-                    value={email}
+                    value={values.email}
                     placeholderTextColor={"#fff"}
-                    onChangeText={text => setEmail(text)}
+                    onBlur={() => setFieldTouched('email')}
+                    onChangeText={handleChange('email')}
                     style={styles.textInput}
                   />
+                  {touched.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
                   {/* <Spinner
 
               visible={loading}
@@ -243,29 +241,33 @@ const SignUp = ({ navigation }) => {
             /> */}
                   <TextInput
                     placeholder="Phone number"
-                    value={phone}
+                    value={values.phone}
                     placeholderTextColor={"#fff"}
-                    onChangeText={text => setPhone(text)}
+                    onBlur={() => setFieldTouched('phone')}
+                    onChangeText={handleChange('phone')}
                     style={styles.textInput}
                   />
+                  {touched.phone && <Text style={{ color: 'red' }}>{errors.phone}</Text>}
                   <TextInput
                     placeholder="Password"
-                    value={password}
+                    value={values.password}
                     secureTextEntry={true}
-                    onChangeText={text => setPassword(text)}
+                    onBlur={() => setFieldTouched('password')}
+                    onChangeText={handleChange('password')}
                     placeholderTextColor={"#fff"}
                     style={styles.textInput}
                   />
+                  {touched.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
                   <TextInput
                     placeholder="Confirm Password"
-                    value={confirmPassword}
+                    value={values.confirmPassword}
                     secureTextEntry={true}
-                    onChangeText={text => setConfirmPassword(text)}
+                    onBlur={() => setFieldTouched('confirmPassword')}
+                    onChangeText={handleChange('confirmPassword')}
                     placeholderTextColor={"#fff"}
                     style={confirmPassword === password ? styles.textInput : styles.textInputError}
                   />
-
-
+                  {touched.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>}
                 </View>
               )}
             </Formik>
