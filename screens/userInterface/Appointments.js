@@ -14,14 +14,8 @@ import {
 import Card from "../../components/appointments/AppointmentCard.js";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { db, auth } from "../../firebase/FirebaseConfig.js";
-import { doc, setDoc } from "firebase/firestore";
-import { collection, getDocs } from "firebase/firestore";
-import { Button, Paragraph, } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Dialog from "react-native-dialog";
-
-
-
+import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import moment from "moment";
 
 function Appointments(props) {
 
@@ -107,44 +101,49 @@ function Appointments(props) {
 
     const cancelAppointment = (appointment) => {
 
-        Alert.alert(
-            "Do you want to Cancel this Appointment?",
-            "",
-            [
-                {
-                    text: "No",
-                    onPress: () => {
-                        console.log("No Pressed")
+        if (appointment.date === moment().format("YYYY-MM-DD")) {
 
-                    },
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        console.log("Yes Pressed")
-                        const appointmentDoc = doc(db, "appointments", appointment.id);
-                        setDoc(appointmentDoc, {
-                            status: {
-                                is_cancelled: true,
-                                is_completed: false,
-                                is_pending: false,
-                            },
-                        }, { merge: true })
-                    }
-                }
 
-            ]
-        );
+        }
 
-        // const appointmentDoc = doc(db, "appointments", appointment.id);
-        // setDoc(appointmentDoc, {
-        //     status: {
-        //         is_cancelled: true,
-        //         is_completed: false,
-        //         is_pending: false,
-        //     }
-        // })
+        //     Alert.alert(
+        //         "Do you want to Cancel this Appointment?",
+        //         "",
+        //         [
+        //             {
+        //                 text: "No",
+        //                 onPress: () => {
+        //                     console.log("No Pressed")
+
+        //                 },
+        //                 style: "cancel"
+        //             },
+        //             {
+        //                 text: "Yes",
+        //                 onPress: () => {
+        //                     console.log("Yes Pressed")
+        //                     const appointmentDoc = doc(db, "appointments", appointment.id);
+        //                     setDoc(appointmentDoc, {
+        //                         status: {
+        //                             is_cancelled: true,
+        //                             is_completed: false,
+        //                             is_pending: false,
+        //                         },
+        //                     }, { merge: true })
+        //                 }
+        //             }
+
+        //         ]
+        //     );
+
+        //     // const appointmentDoc = doc(db, "appointments", appointment.id);
+        //     // setDoc(appointmentDoc, {
+        //     //     status: {
+        //     //         is_cancelled: true,
+        //     //         is_completed: false,
+        //     //         is_pending: false,
+        //     //     }
+        //     // })
     };
     useFocusEffect(
         React.useCallback(() => {
@@ -155,7 +154,6 @@ function Appointments(props) {
     const handleReload = () => {
         getAppointments();
     }
-
 
     const FirstRoute = () => (
         <ScrollView style={styles.container}>
@@ -181,10 +179,7 @@ function Appointments(props) {
                                     props.navigation.navigate("Booking", { appointment: appointments[index] });
                                 }}
                                 buttonText2="Cancel"
-                                onCancelPress={() => {
-
-                                    cancelAppointment(appointments[index]);
-                                }}
+                                onCancelPress={() => { cancelAppointment(appointments[index]); }}
                                 data={appointments[index]}
                             />
 

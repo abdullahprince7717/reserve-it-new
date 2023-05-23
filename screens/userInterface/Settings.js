@@ -138,7 +138,7 @@ function Settings(props) {
                     </TouchableRipple> */}
 
 
-                    <TouchableRipple
+                    {/* <TouchableRipple
                         onPress={() => {
                             console.log('pressed')
                             { props.navigation.navigate('Payment') }
@@ -152,7 +152,7 @@ function Settings(props) {
                             />
                             <Text style={styles.menuItemText}>Payment</Text>
                         </View>
-                    </TouchableRipple>
+                    </TouchableRipple> */}
 
 
                     {/* <TouchableRipple

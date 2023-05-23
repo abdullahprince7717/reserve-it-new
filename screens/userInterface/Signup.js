@@ -212,18 +212,22 @@ const SignUp = ({ navigation }) => {
               onSubmit={values => console.log(values)}
               validationSchema={SignupSchema}
             >
-              {({ errors, touched }) => (
+              {({ errors, values, touched, handleChange, setFieldTouched }) => (
                 <View>
                   <TextInput
                     placeholder="Full name"
-                    value={name}
+                    value={values.name}
                     placeholderTextColor={"#fff"}
-                    onChangeText={text => setName(text)}
+                    onChangeText={() => {
+                      touched = setFieldTouched('name')
+                      handleChange('name')
+                    }}
                     style={styles.textInput}
+
                   />
                   {errors.name && touched.name ? (
-                    <div>{errors.name}</div>
-                  ) : null}
+                    <Text style={{ color: 'red' }}>{errors.name}</Text>
+                  ) : <Text style={{ color: '#fff' }} >no way</Text>}
                   <TextInput
                     placeholder="Email"
                     value={email}

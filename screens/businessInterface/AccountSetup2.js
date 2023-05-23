@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { doc, setDoc } from "firebase/firestore";
 import { db, auth } from '../../firebase/FirebaseConfig.js';
 import axios from "axios"
-
+import { Picker } from '@react-native-picker/picker';
 import getFileExtension from '../../utils/getFileExtension.js';
 // import google from 'googleapis'
 
@@ -200,34 +200,6 @@ const BusinessDetails = (props) => {
                     />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    <DropDownPicker
-                        open={open}
-                        value={category}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setCategory}
-                        setItems={setItems}
-                        style={{
-                            backgroundColor: "#E7E7E7",
-                            borderRadius: 5,
-                            height: 55,
-                        }}
-                        containerStyle={{
-                            width: '85%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: 30
-                        }}
-                        textStyle={{
-                            fontSize: 15
-                        }}
-                        labelStyle={{
-                            fontWeight: "bold"
-                        }}
-
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
                     {/* <Feather color="#57B9BB" name="phone" size={23} style ={{margin:10, marginTop: 25, }} />  */}
                     <TextInput
                         label="Business Description"
@@ -241,6 +213,37 @@ const BusinessDetails = (props) => {
 
                     />
                 </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                    <DropDownPicker
+                        open={open}
+                        value={category}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setCategory}
+                        setItems={setItems}
+                        style={{
+                            backgroundColor: "#E7E7E7",
+                            borderRadius: 5,
+                            height: 55,
+                            marginBottom: open ? 100 : 20,
+                            marginTop: 20,
+
+                        }}
+                        containerStyle={{
+                            width: '85%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        textStyle={{
+                            fontSize: 15
+                        }}
+                        labelStyle={{
+                            fontWeight: "bold"
+                        }}
+
+                    />
+                </View>
+
 
                 <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
                     Social Media

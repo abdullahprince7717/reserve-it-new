@@ -98,6 +98,22 @@ const BusinessProfile = (props) => {
         // console.log(data.name)
     }, [])
 
+    useEffect(() => {
+        const sendVerificationEmail = async () => {
+            const user = auth.currentUser.uid;
+
+            if (user) {
+                try {
+                    await user.sendEmailVerification();
+                    console.log('Verification email sent successfully.');
+                } catch (error) {
+                    console.error('Error sending verification email:', error);
+                }
+            }
+        };
+
+        sendVerificationEmail();
+    }, []);
 
     const FirstRoute = () => (
         <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
@@ -118,8 +134,6 @@ const BusinessProfile = (props) => {
     );
 
     const SecondRoute = () => (
-
-
 
         <ScrollView>
             <View style={{ flex: 1, alignItems: 'center' }} >
@@ -252,7 +266,6 @@ const BusinessProfile = (props) => {
                                 }
                                 else {
                                     setShowReview(!showReview)
-
                                 }
                             }}>
                                 Submit
@@ -260,58 +273,47 @@ const BusinessProfile = (props) => {
                         </View>
                     </View>) : null}
 
-                {reviews ? <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
-                    <ScrollView>
-                        {reviews.map((item, index) => (
-                            <View>
-                                <View style={{ width: '100%', flex: 1, flexDirection: 'column', borderRadius: 5 }}>
-                                    <View style={{
-                                        flexDirection: 'row', justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                    }}>
-                                        <Text style={{ marginLeft: 10, fontSize: 19, fontWeight: 'bold', }}>
-                                            {item.customer_name}
-                                        </Text>
-                                        <Text style={{ marginRight: 10 }}>
-                                            {moment().format('DD/MM/YYYY')}
-                                        </Text>
-                                    </View>
+                <View style={{ width: '90%', borderRadius: 5, borderWidth: 1, borderColor: '#000' }}>
+                    <View style={{
+                        flexDirection: 'row', justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}>
+                        <Text style={{ marginLeft: 10, fontSize: 19, fontWeight: 'bold', }}>
+                            Abdullah Ali
+                        </Text>
+                        <Text style={{ marginRight: 10 }}>
+                            {moment().format('MMMM Do YYYY, h:mm:ss a')}
+                        </Text>
+                    </View>
 
 
-                                    <StarRating
-                                        rating={rating}
-                                        onChange={() => {
-                                            console.log("Pressed")
-                                        }}
-                                        maxStars={5}
-                                        starSize={20}
-                                        color="orange"
-                                        style={{ margin: 5 }}
-                                    />
+                    <StarRating
+                        rating={5}
+                        onChange={() => console.log("rating")}
+                        maxStars={5}
+                        starSize={20}
+                        color="orange"
+                        style={{ margin: 5 }}
+                    />
 
-                                    <Subheading style={{ marginLeft: 10 }}>
-                                        {item.service_name}
-                                    </Subheading>
+                    <Subheading style={{ marginLeft: 10 }}>
+                        Service name
+                    </Subheading>
 
-                                    <Caption style={{ marginLeft: 15, }} >
-                                        {item.business_title}
-                                    </Caption>
+                    <Caption style={{ marginLeft: 15, }} >
+                        By Business Name
+                    </Caption>
 
-                                    <Paragraph style={{ marginLeft: 10, backgroundColor: 'white', borderRadius: 10, paddingLeft: 5 }} >
-                                        {item.customer_review}
-                                    </Paragraph>
+                    <Paragraph style={{ marginLeft: 10, backgroundColor: 'white', borderRadius: 10, paddingLeft: 5 }} >
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec eget ex vitae nunc tincidunt egestas.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Donec eget ex vitae nunc tincidunt egestas.
+                    </Paragraph>
 
-                                </View>
-
-                                <Divider style={{ marginLeft: 40, height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
-
-                            </View>
-                        ))}
-
-                    </ScrollView>
                 </View>
-                    :
-                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> No Reviews to show </View>}
+
+                <Divider style={{ height: 2, width: '75%', color: '#000', marginTop: 15, marginBottom: 20, }} />
 
 
 

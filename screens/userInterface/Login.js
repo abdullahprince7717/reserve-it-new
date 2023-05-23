@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View,Text,TextInput, Image, TouchableOpacity } from 'react-native';
-import React, {useState,useEffect,useContext} from 'react'
-import {auth} from  '../../firebase/FirebaseConfig.js'
+import { StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react'
+import { auth } from '../../firebase/FirebaseConfig.js'
 import { CredentialsContext } from '../../global/CredentialsContext';
+import { getAuth, sendEmailVerification } from "firebase/auth";
 // import {Spinner} from 'react-native-loading-spinner-overlay';
 
 // import MyStack from '../../Navigation/AdminUIStack.js';
 
 
 
-const SignIn = ({navigation}) => {
+const SignIn = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,47 +22,45 @@ const SignIn = ({navigation}) => {
   useEffect(() => {
     // console.log("storedCredentials" + JSON.stringify(storedCredentials))
     const subscribe = auth.onAuthStateChanged(user => {
-    
-        if(user){
-          if(storedCredentials.email === "admin123@gmail.com"){
-            navigation.replace("AdminStack", { screen: 'Home' });
-            console.log("admin")
-          }
-          else{
-            navigation.replace('Home')
-            console.log("user")
-          }
 
+      if (user) {
+        if (storedCredentials.email === "admin123@gmail.com") {
+          navigation.replace("AdminStack", { screen: 'Home' });
+          console.log("admin")
         }
+        else {
+          navigation.replace('Home')
+          console.log("user")
+        }
+
+      }
     })
     return subscribe;
 
-    },[])
+  }, [])
 
   const handleLogin = () => {
     auth.signInWithEmailAndPassword(email.trim(), password)
-    .then((credentials) => {
+      .then((credentials) => {
 
-      const user = credentials.user;
-      console.log('loggedIn as email = ' + user?.email);
-      setStoredCredentials({email: email.trim(), password: password})
-
-
-      if(email ==='admin@reserveit.com' && password === '12345678'){
-        navigation.navigate("AdminStack", { screen: 'Home' });
-      }
+        const user = credentials.user;
+        console.log('loggedIn as email = ' + user?.email);
+        setStoredCredentials({ email: email.trim(), password: password })
+        if (email === 'admin@reserveit.com' && password === '12345678') {
+          navigation.navigate("AdminStack", { screen: 'Home' });
+        }
 
 
-      // setIsSignedIn(true);
+        // setIsSignedIn(true);
 
-    })
-    .catch((error) => {
-      console.log("Error Message :" + error.message);
+      })
+      .catch((error) => {
+        console.log("Error Message :" + error.message);
 
-      console.log("Error Code :" + error.code);
-      alert(error.message);
-      
-    })
+        console.log("Error Code :" + error.code);
+        alert(error.message);
+
+      })
   }
 
   // const persistLogin = (credentials) => {
@@ -80,58 +79,58 @@ const SignIn = ({navigation}) => {
   // }
 
   return (
-      <>
+    <>
       <View style={styles.mainView}>
-          <View style={styles.upView}>
-            <Image style ={{resizeMode: 'contain', height: '70%' }}  source={require('../../assets/logo.png')} /> 
+        <View style={styles.upView}>
+          <Image style={{ resizeMode: 'contain', height: '70%' }} source={require('../../assets/logo.png')} />
+        </View>
+        <View style={styles.downView}>
+          <Text style={styles.heading}> Sign In </Text>
+
+          <View style={styles.form}>
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor={"#fff"}
+              onChangeText={text => setEmail(text)}
+              style={styles.textInput}
+            />
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={"#fff"}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
+              style={styles.textInput}
+            />
           </View>
-          <View style={styles.downView}>
-            <Text style = {styles.heading}> Sign In </Text>
 
-            <View style = {styles.form}>
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor= {"#fff"}
-                onChangeText ={text=>setEmail(text)}
-                style={styles.textInput}
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor= {"#fff"}
-                onChangeText ={text=>setPassword(text)}
-                secureTextEntry = {true} 
-                style={styles.textInput}
-              />
-            </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleLogin}
+          >
+            <Text>Sign In </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity 
-              style = {styles.button}
-              onPress ={handleLogin}
-              >
-              <Text>Sign In </Text>
-            </TouchableOpacity>
-
-            {/* <TouchableOpacity style = {styles.fbButton} >
+          {/* <TouchableOpacity style = {styles.fbButton} >
               <Text style = {styles.fbText}>Continue with Facebook </Text>
             </TouchableOpacity> */}
 
-              <View style = {{flexDirection:'row', justifyContent: 'center',marginTop:5}}>
-                    <TouchableOpacity disabled ={true}>
-                        <Text style = {{color: '#fff',fontSize: 15,textDecorationLine: 'underline'}}> Don't have an account? </Text>
-                    </TouchableOpacity>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+            <TouchableOpacity disabled={true}>
+              <Text style={{ color: '#fff', fontSize: 15, textDecorationLine: 'underline' }}> Don't have an account? </Text>
+            </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress ={ () => {
-                        console.log('Pressed')
-                        navigation.navigate('Signup')    
-                    }}
-                    >
-                        <Text style = {{color: '#4267B2',fontSize: 15,fontWeight: 'bold' }}>SignUp</Text> 
-                    </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('Pressed')
+                navigation.navigate('Signup')
+              }}
+            >
+              <Text style={{ color: '#4267B2', fontSize: 15, fontWeight: 'bold' }}>SignUp</Text>
+            </TouchableOpacity>
 
-                </View>
-                
           </View>
+
+        </View>
       </View>
     </>
   )
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   upView: {
-    flex:2,
+    flex: 2,
     width: '100%',
     backgroundColor: '#fff',
     justifyContent: 'center',
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   downView: {
-    flex:5,
+    flex: 5,
     width: '100%',
     backgroundColor: '#000',
     borderTopLeftRadius: 40,
@@ -180,21 +179,21 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'center',
-    marginTop:30,
+    marginTop: 30,
     marginLeft: 20,
     marginBottom: 50
-    
+
   },
 
-  textInput:{  
+  textInput: {
     width: '90%',
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: '#fff',
     height: 52,
     borderRadius: 10,
     paddingLeft: 10,
-    marginTop:20,
-    color : '#fff'
+    marginTop: 20,
+    color: '#fff'
 
   },
 
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
 
   },
 
-  fbText : {
+  fbText: {
     color: '#fff',
   },
 
@@ -233,7 +232,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color:'#fff',
+    color: '#fff',
     marginLeft: 100,
     textDecorationLine: 'underline',
 

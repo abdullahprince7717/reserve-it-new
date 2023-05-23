@@ -9,6 +9,7 @@ import { LogBox } from 'react-native';
 
 const MainScreen = ({ navigation }) => {
 
+
     return (
         <>
             <View style={styles.mainView}>
@@ -18,31 +19,31 @@ const MainScreen = ({ navigation }) => {
                 <View style={styles.downView}>
 
                     <Text style={styles.heading}> Continue<Text style={{ color: '#000' }}> As</Text></Text>
-                    <View style ={{justifyContent:'center',alignItems:'center',height:100,margin:20}}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', height: 100, margin: 20 }}>
                         <FAB
                             // icon={<Ionicons name='md-checkmark-circle' size={32} color='white' />}
                             // style={styles.fab}
                             size='large'
                             onPress={() => navigation.navigate("Signup")}
-                            style={{ width: '60%',height:'80%',justifyContent:'center',alignItems:'center', fontSize:30 }}
-                            label = "Customer"
-                            color = '#fff'
+                            style={{ width: '60%', height: '80%', justifyContent: 'center', alignItems: 'center', fontSize: 30, backgroundColor: '#000' }}
+                            label="Customer"
+                            color='#fff'
 
                         />
                     </View>
-                    <View style ={{justifyContent:'center',alignItems:'center',height:100,margin:20}}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', height: 100, margin: 20 }}>
                         <FAB
                             // icon={<Ionicons name='md-checkmark-circle' size={32} color='white' />}
                             // style={styles.fab}
                             size='large'
-                            onPress={() => {navigation.navigate("BusinessStack",{screen: "Signup"})}}
-                            style={{ width: '60%',height:'80%',justifyContent:'center',alignItems:'center', fontSize:30,  }}
-                            label = "Business"
-                            color = '#fff'
+                            onPress={() => { navigation.navigate("BusinessStack", { screen: "Signup" }) }}
+                            style={{ width: '60%', height: '80%', justifyContent: 'center', alignItems: 'center', fontSize: 30, backgroundColor: '#57B9BB' }}
+                            label="Business"
+                            color='#fff'
 
                         />
                     </View>
-                    {LogBox.ignoreLogs(['Warning: ...'])} 
+                    {LogBox.ignoreLogs(['Warning: ...'])}
                 </View>
             </View>
         </>

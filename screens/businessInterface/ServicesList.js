@@ -1,20 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '../../components/businessUIComponents/ServiceCard.js'
 import { FAB } from 'react-native-paper';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
-import { collection, getDocs,doc, setDoc,query,where } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
 
 const ServicesList = (props) => {
 
     const [services, setServices] = useState([]);
-    const [queryResult,setQueryResult] = useState([]);
+    const [queryResult, setQueryResult] = useState([]);
     const servicesRef = collection(db, "services");
 
-    useEffect(() => {
-        getServices();
-        
-    },[])
+    useFocusEffect(
+        React.useCallback(() => {
+            getServices();
+            console.log('Screen was focused');
+        }, []))
+
 
 
     const getServices = async () => {
@@ -29,7 +31,7 @@ const ServicesList = (props) => {
                 })));
 
                 // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-                
+
                 console.log(services);
             })
             .catch((err) => {
@@ -38,30 +40,30 @@ const ServicesList = (props) => {
     };
 
     return (
-        <View style = {styles.container}>
-            {services.map((item,index) => (
-            <Card 
-                title = {item.name}
-                price = {item.price}
-                duration = {item.duration}
-                onPress = {() => {
-                    console.log('pressed')
-                    {props.navigation.navigate('EditService',{data: services[index]})}
-                }}
-
-            />))}
-
-                <FAB
-                    style={styles.fab}
-                    label = "Add"
-                    large
-                    icon="plus"
+        <View style={styles.container}>
+            {services.map((item, index) => (
+                <Card
+                    title={item.name}
+                    price={item.price}
+                    duration={item.duration}
                     onPress={() => {
-                        console.log('Pressed')
-                        props.navigation.navigate('AddService')
+                        console.log('pressed')
+                        { props.navigation.navigate('EditService', { data: services[index] }) }
                     }}
-                    color = '#fff'
-                />
+
+                />))}
+
+            <FAB
+                style={styles.fab}
+                label="Add"
+                large
+                icon="plus"
+                onPress={() => {
+                    console.log('Pressed')
+                    props.navigation.navigate('AddService')
+                }}
+                color='#fff'
+            />
 
 
         </View>

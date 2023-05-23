@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions, ScrollView, StatusBar, Text } from "react-native";
 import { Button, Searchbar, RadioButton } from 'react-native-paper'
 import BusinessCard from '../../components/explore/Card.js';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { FAB } from 'react-native-paper';
 import { db, auth, } from "../../firebase/FirebaseConfig.js";
 import { doc, getDoc, setDoc, collection, getDocs, where, query, limit } from "firebase/firestore";
@@ -330,6 +330,7 @@ function Explore(props) {
                     ...doc.data(),
                     id: doc.id
                 })));
+                setSearchQuery("");
 
                 console.log(queryResult, 'queryResult');
             })
@@ -376,8 +377,8 @@ function Explore(props) {
                         </Button>
                     </View>
                 </View>
-                <View style={{ marginLeft: 10, }}>
-                    <Text style={{ color: '#fff', fontSize: 18 }}>Search By:</Text>
+                <View style={{ paddingLeft: 10, width: '100%' }}>
+                    <Text style={{ color: '#fff', fontSize: 18, backgroundColor: '#000', }}>Search By:</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', backgroundColor: '#000', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                     <View style={{ flexDirection: "row" }}>
@@ -436,11 +437,11 @@ function Explore(props) {
                     large
                     icon="map-marker-outline"
                     onPress={() => {
-                        console.log('Pressed')
                         props.navigation.navigate('Map', { data: queryResult })
                     }}
                     color='#fff'
                 />
+
             </View>
         </View>
     );

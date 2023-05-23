@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, ScrollView, Image } from 'react-native';
+
+import { StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons, Feather, Ionicons } from "@expo/vector-icons/"
 import { db, auth } from '../../firebase/FirebaseConfig.js'
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import axios from "axios"
 
 const EditProfile = (props) => {
 
@@ -21,7 +20,6 @@ const EditProfile = (props) => {
     const [instagram, setInstagram] = useState('');
     const [facebook, setFacebook] = useState('');
     // const [password,setPassword] = useState('');
-    const [image, setImage] = useState({ uri: 'hahahahahahah' });
 
     useEffect(() => {
         const myDoc = doc(db, "business_users", auth.currentUser.uid)
@@ -56,25 +54,6 @@ const EditProfile = (props) => {
         console.log(auth.currentUser.uid)
 
     }, [])
-    const pickImage = async () => {
-
-
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            // allowsEditing: true,
-            // aspect: [5, 10],
-            // quality: 1,
-            base64: true,
-        });
-        console.log("result: " + result);
-        console.log(JSON.stringify(result));
-        console.log("result.uri: " + result.uri);
-
-        if (!result.cancelled) {
-            setImage(result);
-        }
-    };
 
     function Update(value, merge) {
         const myDoc = doc(db, "business_users", auth.currentUser.uid)
@@ -91,6 +70,8 @@ const EditProfile = (props) => {
 
     return (
         <ScrollView>
+
+
             <View style={styles.container}>
 
                 <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, }}>
@@ -174,6 +155,9 @@ const EditProfile = (props) => {
 
                     />
                 </View>
+
+
+
                 <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
                     Social Media
                 </Text>
@@ -198,36 +182,6 @@ const EditProfile = (props) => {
                     />
                 </View>
 
-                <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
-                    Banner Image
-                </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: -15 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
-                        Select a Banner Image
-                    </Text>
-
-                    {/* <AddImages uri = {image} /> */}
-                    <View style={{ flex: 1, flexDirection: "column", alignItems: 'center', justifyContent: 'center', }}>
-
-                        <View style={{ flexDirection: "row", margin: 10 }}>
-                            {image && <Image source={{ uri: image.uri }} style={{ width: 100, height: 100, borderRadius: 13 }} />}
-
-                            <View style={{ justifyContent: 'center', margin: 10 }}>
-                                {image &&
-                                    <Button icon="delete" color='red' onPress={deleteImage} />}
-                            </View>
-
-                        </View>
-
-                        <View style={{ margin: 15, marginBottom: 20 }}>
-                            <Button icon="camera" mode="outlined" color='#57B9BB' onPress={pickImage}>
-                                {image ? <Text>Reselect the picture</Text> : <Text>Select a Picture from Gallery</Text>}
-                            </Button>
-                        </View>
-
-                    </View>
-
-                </View>
 
                 <View style={{ justifyContent: 'center', margin: 20, marginTop: 40 }}>
                     <TouchableOpacity
@@ -244,7 +198,6 @@ const EditProfile = (props) => {
                                 businessDescription: businessDescription,
                                 instagram: instagram,
                                 facebook: facebook,
-                                bannerImage: bannerImage,
                             }, true);
                             // navigation.navigate('')
                         }}
@@ -255,7 +208,10 @@ const EditProfile = (props) => {
                         </Text>
 
                     </TouchableOpacity>
+
                 </View>
+
+
             </View>
         </ScrollView>
     );

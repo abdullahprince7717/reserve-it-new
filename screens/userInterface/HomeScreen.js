@@ -86,10 +86,18 @@ function HomeScreen(props) {
                 console.log(err);
             });
     };
+    const sendVerificationEmail = async () => {
+        const user = auth.currentUser.email;
+        if (user) {
+            try {
+                await user.sendEmailVerification();
+                console.log('Verification email sent successfully.');
+            } catch (error) {
+                console.error('Error sending verification email:', error);
+            }
+        }
+    };
 
-    useEffect(() => {
-        console.log(storedCredentials);
-    });
 
     useEffect(() => {
         // props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
