@@ -16,6 +16,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { db, auth } from "../../firebase/FirebaseConfig.js";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import moment from "moment";
+import Dialog from "react-native-dialog";
 
 function Appointments(props) {
 
@@ -101,8 +102,13 @@ function Appointments(props) {
 
     const cancelAppointment = (appointment) => {
 
-        if (appointment.date === moment().format("YYYY-MM-DD")) {
-
+        if (appointment.date === moment().format("YYYY-MM-DD") && appointment.time < moment().format("HH:mm")) {
+            if (moment().format("HH:mm") - appointment.time < 45) {
+                console.log("You cannot cancel this appointment");
+            }
+            else {
+                console.log("You can cancel this appointment")
+            }
 
         }
 

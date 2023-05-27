@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, ScrollView, Image, TouchableOpacity, StatusBar, Alert } from 'react-native';
 import { db, auth } from '../../firebase/FirebaseConfig.js'
-// import {dbBusiness,authBusiness} from  '../../firebase/FirebaseConfig2.js'
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, SignInWithRedirect, FacebookAuthProvider } from "firebase/auth";
 import { MaterialIndicator } from 'react-native-indicators';
-// import {authentication} from '../../firebase/FirebaseConfig2.js';
-
-
-
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const SignUp = ({ navigation }) => {
 
@@ -16,8 +13,22 @@ const SignUp = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [name, setName] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(true);
+
+    const SignupSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(5, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        email: Yup.string().email('Invalid email').required('Required'),
+        phone: Yup.number()
+            .min(11, 'Write Valid Phone Number')
+            .required('Required'),
+        password: Yup.string()
+            .min(8, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+    });
 
     useEffect(() => {
 
@@ -154,7 +165,6 @@ const SignUp = ({ navigation }) => {
                     const roleDoc = doc(db, "roles", credentials.user.uid);
 
                     storeData(userDoc, servicesDoc, roleDoc, credentials.user.email);
-
                     navigation.replace("AccountSetup1")
                 }
 
@@ -182,56 +192,71 @@ const SignUp = ({ navigation }) => {
 
                 <ScrollView style={styles.downView}>
                     <Text style={styles.heading}> Sign Up </Text>
+                    <Formik
+                        initialValues={{ name: '', email: '', phone, password: '', confirmPassword: '', }}
+                        onSubmit={values => console.log(values)}
+                        validationSchema={SignupSchema}
+                    >
+                        {({ errors, values, touched, handleChange, setFieldTouched }) => (
+                            <View style={styles.form}>
+                                <TextInput
+                                    placeholder="Full name"
+                                    value={values.name}
+                                    placeholderTextColor={"#fff"}
+                                    onBlur={() => setFieldTouched('name')}
+                                    onChangeText={handleChange('name')}
+                                    style={styles.textInput}
 
-                    <View style={styles.form}>
-                        <TextInput
-                            placeholder="Full name"
-                            placeholderTextColor={"#fff"}
-                            style={styles.textInput}
-                            value={name}
-                            onChangeText={(text) => setName(text)}
-                        />
-                        <TextInput
-                            placeholder="Email"
-                            value={email}
-                            placeholderTextColor={"#fff"}
-                            onChangeText={text => setEmail(text)}
-                            style={styles.textInput}
-                        />
-                        <TextInput
-                            placeholder="Phone number"
-                            placeholderTextColor={"#fff"}
-                            style={styles.textInput}
-                            value={phone}
-                            onChangeText={(text) => setPhone(text)}
-                            keyboardType="phone-pad"
-                        />
-                        <TextInput
-                            placeholder="Password"
-                            value={password}
-                            secureTextEntry={true}
-                            onChangeText={text => setPassword(text)}
-                            placeholderTextColor={"#fff"}
-                            style={styles.textInput}
+                                />
+                                {touched.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
+                                <TextInput
+                                    placeholder="Email"
+                                    value={values.email}
+                                    placeholderTextColor={"#fff"}
+                                    onBlur={() => setFieldTouched('email')}
+                                    onChangeText={handleChange('email')}
+                                    style={styles.textInput}
+                                />
+                                {touched.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+                                <TextInput
+                                    placeholder="Phone number"
+                                    placeholderTextColor={"#fff"}
+                                    style={styles.textInput}
+                                    value={values.phone}
+                                    onBlur={() => setFieldTouched('phone')}
+                                    onChangeText={handleChange('phone')}
+                                    keyboardType="phone-pad"
+                                />
+                                {touched.phone && <Text style={{ color: 'red' }}>{errors.phone}</Text>}
+                                <TextInput
+                                    placeholder="Password"
+                                    value={values.password}
+                                    secureTextEntry={true}
+                                    onBlur={() => setFieldTouched('password')}
+                                    onChangeText={handleChange('password')}
+                                    placeholderTextColor={"#fff"}
+                                    style={styles.textInput}
 
-                        />
-                        {/* <TextInput
-                        placeholder="Confirm Password"
-                        placeholderTextColor= {"#fff"}
-                        style={styles.textInput}
-                    /> */}
-                    </View>
+                                />
+                                {touched.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+                                <TouchableOpacity style={styles.button}
+                                    onPress={() => {
+                                        if (errors.name || errors.email || errors.phone || errors.password) {
+                                            alert("Please fill all the fields accordingly")
+                                            return;
+                                        }
+                                        setName(values.name);
+                                        setEmail(values.email);
+                                        setPhone(values.phone);
+                                        setPassword(values.password);
+                                        signUp();
+                                    }} >
+                                    <Text>Sign Up </Text>
+                                </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button}
-                        onPress={() => {
-                            signUp();
-                        }} >
-                        <Text>Sign Up </Text>
-                    </TouchableOpacity>
-
-                    {/* <TouchableOpacity style = {styles.fbButton} >
-                <Text style = {styles.fbText}>Continue with Facebook </Text>
-            </TouchableOpacity> */}
+                            </View>
+                        )}
+                    </Formik>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
                         <TouchableOpacity disabled={true}>
@@ -249,13 +274,6 @@ const SignUp = ({ navigation }) => {
                         </TouchableOpacity>
 
                     </View>
-
-                    {/* style={styles.facebookBtn}>
-                    <FontAwesome name='facebook' size={20} color='#fff' />
-                <Text style={}>
-                    Login With Facebook 
-	            </Text> */}
-
 
                 </ScrollView>
 
@@ -327,14 +345,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '90%',
         backgroundColor: '#fff',
-        marginLeft: 20,
-        marginBottom: 10,
+        // marginLeft: 20,
         height: 52,
         borderRadius: 10,
         marginBottom: 15,
+        marginTop: 20,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+
     },
     fbText: {
         color: '#fff',

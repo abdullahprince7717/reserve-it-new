@@ -9,17 +9,8 @@ import { db, auth } from '../../firebase/FirebaseConfig.js';
 import axios from "axios"
 import { Picker } from '@react-native-picker/picker';
 import getFileExtension from '../../utils/getFileExtension.js';
-// import google from 'googleapis'
-
-// const CLIENT_ID = '116657316456-l4smh6jsae66ntdvu7afdnfgqcmp8sec.apps.googleusercontent.com'
-// const CLIENT_SECRET = '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'
-// const redirect
-
-
-
-
-// initializeApp(firebaseConfig)
-
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
 const BusinessDetails = (props) => {
     // const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
@@ -30,14 +21,6 @@ const BusinessDetails = (props) => {
         { label: 'Salon', value: 'salon' },
         { label: 'Doctor', value: 'doctor' }
     ]);
-
-
-    useEffect(() => {
-        console.log(auth.currentUser.uid);
-
-        console.log(image ? image : "no image");
-    }, [])
-
     const [businessName, setBusinessName] = useState('');
     const [businessAddress, setBusinessAddress] = useState('');
     const [businessEmail, setBusinessEmail] = useState('');
@@ -90,8 +73,6 @@ const BusinessDetails = (props) => {
 
     const pickImage = async () => {
 
-
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             // allowsEditing: true,
@@ -124,20 +105,9 @@ const BusinessDetails = (props) => {
         const { data: hello } = await axios.post(apiUrl, data).catch(err => {
             console.log("error: " + err)
         });
-
-        console.log(hello.url)
         addBusinessInfo(hello.url);
 
-        // const { url, public_id } = await cloudinary.uploader.upload(base64, {
-        //     upload_preset: 'dev_setups'
-        // });
-
-        // console.log("This is url");
-        // console.log(url);
-
     }
-
-
 
     return (
         <KeyboardAvoidingView
@@ -169,13 +139,8 @@ const BusinessDetails = (props) => {
                         mode="outlined"
                         value={businessEmail}
                         onChangeText={text => setBusinessEmail(text)}
-                    // error = {true}
-                    // onFocus = {console.log("focused")}
-                    // onBlur = {console.log("blurred")}
+
                     />
-                    {/* <HelperText type="error" visible={hasErrors()}>
-                        Email address is invalid!
-                    </HelperText> */}
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
                     {/* <MaterialCommunityIcons color="#57B9BB" name="email-outline" size={23} style ={{margin:10, marginTop: 25, }} />  */}

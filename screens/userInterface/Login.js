@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { auth } from '../../firebase/FirebaseConfig.js'
 import { CredentialsContext } from '../../global/CredentialsContext';
 import { getAuth, sendEmailVerification } from "firebase/auth";
+
 // import {Spinner} from 'react-native-loading-spinner-overlay';
 
 // import MyStack from '../../Navigation/AdminUIStack.js';
@@ -18,6 +19,7 @@ const SignIn = ({ navigation }) => {
   const [storedCredentials, setStoredCredentials] = useContext(CredentialsContext);
 
   // const [IsSignedIn, setIsSignedIn] = useState(false);
+
 
   useEffect(() => {
     // console.log("storedCredentials" + JSON.stringify(storedCredentials))

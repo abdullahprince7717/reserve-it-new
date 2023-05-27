@@ -4,8 +4,9 @@ import { StyleSheet, View, Text, TextInput, ScrollView, Image, TouchableOpacity,
 import { db, auth } from '../../firebase/FirebaseConfig.js'
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, signInWithRedirect, FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
-import { Formik, Form, Field } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 // import {Spinner} from 'react-native-loading-spinner-overlay';
 
 // import { getNotificationInbox } from 'native-notify';
@@ -36,23 +37,21 @@ const SignUp = ({ navigation }) => {
       .required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     phone: Yup.number()
-      .max(11, 'Write Valid Phone Number')
+      .min(11, 'Write Valid Phone Number')
       .required('Required'),
     password: Yup.string()
       .min(8, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Required'),
-    confirmPassword: Yup.string()
-      .min(8, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
   });
 
-  useEffect(() => {
-    // let notifications = await getNotificationInbox(2874, '8RGIzG08cvN06b2755Iopz');
-    // console.log("notifications: ", notifications);
-    // setData(notifications);
-  }, []);
+  // useEffect(() => {
+  //   // let notifications = await getNotificationInbox(2874, '8RGIzG08cvN06b2755Iopz');
+  //   // console.log("notifications: ", notifications);
+  //   // setData(notifications);
+
+  //   axios.post('localhost:4600/sendCode', 'abdullahprince7717@gmail.com').then((response) => { console.log(response) }).catch((error) => { console.log(error) })
+  // }, []);
 
 
   const storeData = (userDoc, appointmentsDoc, reviewsDoc, complaintsDoc,) => { }
@@ -74,9 +73,6 @@ const SignUp = ({ navigation }) => {
     // setLoading = true;
     createUserWithEmailAndPassword(auth, email.trim(), password)
       .then((credentials) => {
-        // setLoading = true;
-        // let userCredentials = credentials;
-        // console.log(userCredentials);
         navigation.replace("Home")
 
         const userDoc = doc(db, "users", credentials.user.uid)
@@ -86,9 +82,6 @@ const SignUp = ({ navigation }) => {
         const roleDoc = doc(db, "roles", credentials.user.uid);
 
         console.log("A U T H ID :" + credentials.user.uid)
-        // persistLogin(userCredentials);
-
-        // const userDoc = doc(db,"users","auth.uid")
 
         const userData = {
           name: name,
@@ -170,9 +163,6 @@ const SignUp = ({ navigation }) => {
             alert(error.message)
           })
 
-
-
-
       })
       .catch((error) => {
         console.log("Error Message :" + error.message);
@@ -183,25 +173,12 @@ const SignUp = ({ navigation }) => {
 
   }
 
-  // const persistLogin = (credentials) => {
-
-  //   AsyncStorage.setItem('userCredentials', JSON.stringify(credentials))
-  //       .then(() => {
-  //           console.log('Stored credentials' + credentials);
-  //           setStoredCredentials(credentials);
-  //           // navigation.navigate('Home');
-  //       })
-  //       .catch((error) => {
-  //           console.log(error);
-  //       })
-
-  //   }
 
   return (
     <>
       <View style={styles.mainView}>
         <View style={styles.upView}>
-          <Image style={{ resizeMode: 'contain', height: '60%' }} source={require('../../assets/logo.png')} />
+          <Image style={{ resizeMode: 'contain', height: '70%' }} source={require('../../assets/logo.png')} />
         </View>
         <ScrollView style={styles.downView}>
           <Text style={styles.heading}> Sign Up </Text>
@@ -258,25 +235,27 @@ const SignUp = ({ navigation }) => {
                     style={styles.textInput}
                   />
                   {touched.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
-                  <TextInput
-                    placeholder="Confirm Password"
-                    value={values.confirmPassword}
-                    secureTextEntry={true}
-                    onBlur={() => setFieldTouched('confirmPassword')}
-                    onChangeText={handleChange('confirmPassword')}
-                    placeholderTextColor={"#fff"}
-                    style={confirmPassword === password ? styles.textInput : styles.textInputError}
-                  />
-                  {touched.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>}
+
+                  <TouchableOpacity style={styles.button}
+                    onPress={() => {
+                      if (errors.name || errors.email || errors.phone || errors.password) {
+                        alert("Please fill all the fields accordingly")
+                        return;
+                      }
+                      setName(values.name);
+                      setEmail(values.email);
+                      setPhone(values.phone);
+                      setPassword(values.password);
+                      signUp();
+                    }} >
+                    <Text>Sign Up </Text>
+                  </TouchableOpacity>
                 </View>
+
               )}
+
             </Formik>
-            <TouchableOpacity style={styles.button}
-              onPress={() => {
-                signUp();
-              }} >
-              <Text>Sign Up </Text>
-            </TouchableOpacity>
+
           </View>
 
 
