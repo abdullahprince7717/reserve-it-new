@@ -253,7 +253,6 @@ const SignUp = ({ navigation }) => {
                                     }} >
                                     <Text>Sign Up </Text>
                                 </TouchableOpacity>
-
                             </View>
                         )}
                     </Formik>

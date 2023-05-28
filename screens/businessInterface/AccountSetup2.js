@@ -10,7 +10,7 @@ import axios from "axios"
 import { Picker } from '@react-native-picker/picker';
 import getFileExtension from '../../utils/getFileExtension.js';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import * as Yup from 'yup';
 
 const BusinessDetails = (props) => {
     // const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
@@ -42,19 +42,45 @@ const BusinessDetails = (props) => {
     const hasErrors = () => {
         return !businessEmail.includes('@');
     };
+    const accountSetupSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(5, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        email: Yup.string().email('Invalid email').required('Required'),
+        phone: Yup.number()
+            .min(11, 'Write Valid Phone Number')
+            .required('Required'),
+        address: Yup.string()
+            .min(5, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        description: Yup.string()
+            .min(5, 'Too Short!')
+            .max(100, 'Too Long!')
+            .required('Required'),
+        category: Yup.string()
+            .required('Required'),
+        instagram: Yup.string()
+            .required('Required'),
+        facebook: Yup.string()
+            .required('Required'),
+        image: Yup.string()
+            .required('Required'),
+    });
 
 
-    const addBusinessInfo = async (image_url) => {
+    const addBusinessInfo = async (values, image_url) => {
 
         const business = {
-            business_name: businessName,
-            business_address: businessAddress,
-            business_email: businessEmail,
-            category: category,
-            business_phone: businessPhone,
-            business_description: businessDescription,
-            instagram: instagram,
-            facebook: facebook,
+            business_name: values.name,
+            business_address: values.address,
+            business_email: values.email,
+            category: values.category,
+            business_phone: values.phone,
+            business_description: values.description,
+            instagram: values.instagram,
+            facebook: values.facebook,
             image: image_url
 
         }
@@ -80,9 +106,6 @@ const BusinessDetails = (props) => {
             // quality: 1,
             base64: true,
         });
-        console.log("result: " + result);
-        console.log(JSON.stringify(result));
-        console.log("result.uri: " + result.uri);
 
         if (!result.cancelled) {
             setImage(result);
@@ -91,10 +114,9 @@ const BusinessDetails = (props) => {
     const deleteImage = () => {
         setImage(null);
     }
-    const uploadImage = async () => {
+    const uploadImage = async (values) => {
         let extension = getFileExtension(image.uri);
         let base64 = `data:image/${extension};base64,${image.base64}`;
-
         let apiUrl = 'https://api.cloudinary.com/v1_1/reserve-it-fyp/image/upload';
 
         let data = {
@@ -105,8 +127,7 @@ const BusinessDetails = (props) => {
         const { data: hello } = await axios.post(apiUrl, data).catch(err => {
             console.log("error: " + err)
         });
-        addBusinessInfo(hello.url);
-
+        addBusinessInfo(values, hello.url);
     }
 
     return (
@@ -119,166 +140,195 @@ const BusinessDetails = (props) => {
                 <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
                     Business Details
                 </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -15 }}>
-                    {/* <Ionicons color="#57B9BB" name="business" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        label="Business Name"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        mode="outlined"
-                        value={businessName}
-                        onChangeText={text => setBusinessName(text)}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    {/* <MaterialCommunityIcons color="#57B9BB" name="email-outline" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        label="Business Email"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        mode="outlined"
-                        value={businessEmail}
-                        onChangeText={text => setBusinessEmail(text)}
-
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    {/* <MaterialCommunityIcons color="#57B9BB" name="email-outline" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        label="Business Address"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        mode="outlined"
-                        value={businessAddress}
-                        onChangeText={text => setBusinessAddress(text)}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    {/* <MaterialCommunityIcons color="#57B9BB" name="email-outline" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        label="Business Phone"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        mode="outlined"
-                        value={businessPhone}
-                        onChangeText={text => setBusinessPhone(text)}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    {/* <Feather color="#57B9BB" name="phone" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        label="Business Description"
-                        placeholderTextColor={"grey"}
-                        multiline={true}
-                        underlineColorAndroid='transparent'
-                        style={styles.description}
-                        mode="outlined"
-                        value={businessDescription}
-                        onChangeText={text => setBusinessDescription(text)}
-
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    <DropDownPicker
-                        open={open}
-                        value={category}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setCategory}
-                        setItems={setItems}
-                        style={{
-                            backgroundColor: "#E7E7E7",
-                            borderRadius: 5,
-                            height: 55,
-                            marginBottom: open ? 100 : 20,
-                            marginTop: 20,
-
-                        }}
-                        containerStyle={{
-                            width: '85%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                        textStyle={{
-                            fontSize: 15
-                        }}
-                        labelStyle={{
-                            fontWeight: "bold"
-                        }}
-
-                    />
-                </View>
-
-
-                <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
-                    Social Media
-                </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -15 }}>
-                    {/* <Feather color="red" name="instagram" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        placeholder="Instagram"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        value={instagram}
-                        onChangeText={text => setInstagram(text)}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                    {/* <Feather color="blue" name="facebook" size={23} style ={{margin:10, marginTop: 25, }} />  */}
-                    <TextInput
-                        placeholder="Facebook"
-                        placeholderTextColor={"grey"}
-                        style={styles.textInput}
-                        value={facebook}
-                        onChangeText={text => setFacebook(text)}
-                    />
-                </View>
-
-                <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
-                    Select a Banner Image
-                </Text>
-
-                {/* <AddImages uri = {image} /> */}
-                <View style={{ flex: 1, flexDirection: "column", alignItems: 'center', justifyContent: 'center', }}>
-
-                    <View style={{ flexDirection: "row", margin: 10 }}>
-                        {image && <Image source={{ uri: image.uri }} style={{ width: 100, height: 100, borderRadius: 13 }} />}
-
-                        <View style={{ justifyContent: 'center', margin: 10 }}>
-                            {image &&
-                                <Button icon="delete" color='red' onPress={deleteImage} />}
-                        </View>
-
-                    </View>
-
-                    <View style={{ margin: 15, marginBottom: 20 }}>
-                        <Button icon="camera" mode="outlined" color='#57B9BB' onPress={pickImage}>
-                            {image ? <Text>Reselect the picture</Text> : <Text>Select a Picture from Gallery</Text>}
-                        </Button>
-                    </View>
-
-                </View>
-
-            </ScrollView>
-            <View style={{ justifyContent: 'center', margin: 20, marginTop: 2 }}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                        console.log("Pressed SAVE")
-                        // addBusinessInfo();
-                        uploadImage();
-                        props.navigation.navigate('AccountSetup3')
-                        // props.navigation.navigate('AccountSetup4')
-                    }}
+                <Formik
+                    initialValues={{ name: '', email: '', phone: '', address: '', description: '', category: '', instagram: '', facebook: '', image: '' }}
+                    validationSchema={SignupSchema}
                 >
+                    {({ errors, values, touched, handleChange, setFieldTouched }) => (
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -15 }}>
+                                {/* <Ionicons color="#57B9BB" name="business" size={23} style ={{margin:10, marginTop: 25, }} />  */}
+                                <TextInput
+                                    label="Business Name"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    mode="outlined"
+                                    value={values.name}
+                                    onBlur={() => setFieldTouched('name')}
+                                    onChangeText={handleChange('name')}
+                                />
+                            </View>
+                            {touched.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <TextInput
+                                    label="Business Email"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    mode="outlined"
+                                    value={values.email}
+                                    onBlur={() => setFieldTouched('email')}
+                                    onChangeText={handleChange('email')}
+                                />
+                            </View>
+                            {touched.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <TextInput
+                                    label="Business Address"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    mode="outlined"
+                                    value={values.address}
+                                    onBlur={() => setFieldTouched('address')}
+                                    onChangeText={handleChange('address')}
+                                />
+                            </View>
+                            {touched.address && <Text style={{ color: 'red' }}>{errors.address}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <TextInput
+                                    label="Business Phone"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    mode="outlined"
+                                    value={values.phone}
+                                    onBlur={() => setFieldTouched('phone')}
+                                    onChangeText={handleChange('phone')}
+                                />
+                            </View>
+                            {touched.phone && <Text style={{ color: 'red' }}>{errors.phone}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <TextInput
+                                    label="Business Description"
+                                    placeholderTextColor={"grey"}
+                                    multiline={true}
+                                    underlineColorAndroid='transparent'
+                                    style={styles.description}
+                                    mode="outlined"
+                                    value={values.description}
+                                    onBlur={() => setFieldTouched('description')}
+                                    onChangeText={handleChange('description')}
+                                />
+                            </View>
+                            {touched.description && <Text style={{ color: 'red' }}>{errors.description}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <DropDownPicker
+                                    open={open}
+                                    value={values.category}
+                                    items={items}
+                                    setOpen={setOpen}
+                                    setValue={handleChange('category')}
+                                    onBlur={() => setFieldTouched('category')}
+                                    setItems={setItems}
+                                    style={{
+                                        backgroundColor: "#E7E7E7",
+                                        borderRadius: 5,
+                                        height: 55,
+                                        marginBottom: open ? 100 : 20,
+                                        marginTop: 20,
 
-                    <Text style={{ color: '#fff', fontSize: 17 }}>
-                        NEXT
-                    </Text>
+                                    }}
+                                    containerStyle={{
+                                        width: '85%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                    textStyle={{
+                                        fontSize: 15
+                                    }}
+                                    labelStyle={{
+                                        fontWeight: "bold"
+                                    }}
+                                />
+                            </View>
+                            {touched.category && <Text style={{ color: 'red' }}>{errors.category}</Text>}
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
+                                Social Media
+                            </Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: -15 }}>
 
-                </TouchableOpacity>
+                                <TextInput
+                                    placeholder="Instagram"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    value={values.instagram}
+                                    onBlur={() => setFieldTouched('instagram')}
+                                    onChangeText={handleChange('instagram')}
+                                />
+                            </View>
+                            {touched.instagram && <Text style={{ color: 'red' }}>{errors.instagram}</Text>}
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                                <TextInput
+                                    placeholder="Facebook"
+                                    placeholderTextColor={"grey"}
+                                    style={styles.textInput}
+                                    value={values.facebook}
+                                    onBlur={() => setFieldTouched('facebook')}
+                                    onChangeText={handleChange('facebook')}
+                                />
+                            </View>
+                            {touched.facebook && <Text style={{ color: 'red' }}>{errors.facebook}</Text>}
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
+                                Select a Banner Image
+                            </Text>
 
-            </View>
+                            <View style={{ flex: 1, flexDirection: "column", alignItems: 'center', justifyContent: 'center', }}>
+
+                                <View style={{ flexDirection: "row", margin: 10 }}>
+                                    {image && <Image source={{ uri: image.uri }} style={{ width: 100, height: 100, borderRadius: 13 }} />}
+
+                                    <View style={{ justifyContent: 'center', margin: 10 }}>
+                                        {image &&
+                                            <Button icon="delete" color='red' onPress={deleteImage} />}
+                                    </View>
+
+                                </View>
+
+                                <View style={{ margin: 15, marginBottom: 20 }}>
+                                    <Button icon="camera" mode="outlined" color='#57B9BB' onPress={pickImage}>
+                                        {image ? <Text>Reselect the picture</Text> : <Text>Select a Picture from Gallery</Text>}
+                                    </Button>
+                                </View>
+
+                            </View>
+                            <View style={{ justifyContent: 'center', margin: 20, marginTop: 2 }}>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => {
+
+                                        if (errors.name || errors.email || errors.address || errors.phone || errors.description || errors.category || errors.instagram || errors.facebook) {
+                                            Alert.alert(
+                                                "Please fill all the fields correctly",
+                                                "",
+                                                [
+                                                    {
+                                                        text: "Cancel",
+                                                        onPress: () => console.log("Cancel Pressed"),
+                                                        style: "cancel"
+                                                    },
+                                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                                ],
+                                                { cancelable: false }
+                                            );
+                                            return;
+                                        }
+                                        else {
+                                            uploadImage(values);
+                                            props.navigation.navigate('AccountSetup3')
+                                        }
+
+                                    }}
+                                >
+
+                                    <Text style={{ color: '#fff', fontSize: 17 }}>
+                                        NEXT
+                                    </Text>
+
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )}
+
+                </Formik>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
