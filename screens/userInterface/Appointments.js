@@ -102,54 +102,54 @@ function Appointments(props) {
 
     const cancelAppointment = (appointment) => {
 
-        if (appointment.date === moment().format("YYYY-MM-DD") && appointment.time < moment().format("HH:mm")) {
-            if (moment().format("HH:mm") - appointment.time < 45) {
-                console.log("You cannot cancel this appointment");
-            }
-            else {
-                console.log("You can cancel this appointment")
-            }
+        // if (appointment.date === moment().format("YYYY-MM-DD") && appointment.time < moment().format("HH:mm")) {
+        //     if (moment().format("HH:mm") - appointment.time < 45) {
+        //         console.log("You cannot cancel this appointment");
+        //     }
+        //     else {
+        //         console.log("You can cancel this appointment")
+        //     }
 
-        }
+        // }
 
-        //     Alert.alert(
-        //         "Do you want to Cancel this Appointment?",
-        //         "",
-        //         [
-        //             {
-        //                 text: "No",
-        //                 onPress: () => {
-        //                     console.log("No Pressed")
+        Alert.alert(
+            "Do you want to Cancel this Appointment?",
+            "",
+            [
+                {
+                    text: "No",
+                    onPress: () => {
+                        console.log("No Pressed")
 
-        //                 },
-        //                 style: "cancel"
-        //             },
-        //             {
-        //                 text: "Yes",
-        //                 onPress: () => {
-        //                     console.log("Yes Pressed")
-        //                     const appointmentDoc = doc(db, "appointments", appointment.id);
-        //                     setDoc(appointmentDoc, {
-        //                         status: {
-        //                             is_cancelled: true,
-        //                             is_completed: false,
-        //                             is_pending: false,
-        //                         },
-        //                     }, { merge: true })
-        //                 }
-        //             }
+                    },
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        console.log("Yes Pressed")
+                        const appointmentDoc = doc(db, "appointments", appointment.id);
+                        setDoc(appointmentDoc, {
+                            status: {
+                                is_cancelled: true,
+                                is_completed: false,
+                                is_pending: false,
+                            },
+                        }, { merge: true })
+                    }
+                }
 
-        //         ]
-        //     );
+            ]
+        );
 
-        //     // const appointmentDoc = doc(db, "appointments", appointment.id);
-        //     // setDoc(appointmentDoc, {
-        //     //     status: {
-        //     //         is_cancelled: true,
-        //     //         is_completed: false,
-        //     //         is_pending: false,
-        //     //     }
-        //     // })
+        // const appointmentDoc = doc(db, "appointments", appointment.id);
+        // setDoc(appointmentDoc, {
+        //     status: {
+        //         is_cancelled: true,
+        //         is_completed: false,
+        //         is_pending: false,
+        //     }
+        // })
     };
     useFocusEffect(
         React.useCallback(() => {

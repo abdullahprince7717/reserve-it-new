@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView, TextInput, useWindowDimensions, TouchableOpacity, Alert } from 'react-native';
 import { ImageSlider } from "react-native-image-slider-banner";
 import { Caption, Title, Divider, Paragraph, ProgressBar, Subheading, Button } from 'react-native-paper';
@@ -9,17 +9,19 @@ import moment from 'moment';
 import ServiceCard from '../../components/businessProfile/ServiceCard.js';
 import ReviewCard from '../../components/businessProfile/ReviewCard.js';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
-import { collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, query, where, addDoc } from "firebase/firestore";
 import * as Linking from 'expo-linking';
 
 const BusinessProfile = (props) => {
     const layout = useWindowDimensions();
     const [isFilled, setIsFilled] = useState(false)
+    const reviewRef = useRef();
 
     const [showReview, setShowReview] = useState(true)
     const [reviewText, setReviewText] = useState('');
     const [reviewRating, setReviewRating] = useState(0);
-    const [reviews, setReviews] = useState([{ customer_email: 'abdullahprince7717', customer_name: 'Abdullah Ali', customer_review: 'asgdjaskbdbaj', business_title: 'Hameed clinic', rating: 5, time: moment().format('MMMM Do YYYY'), business_email: props?.route?.params?.data?.email }]);
+    // const [reviews, setReviews] = useState([{ customer_email: 'abdullahprince7717', customer_name: 'Abdullah Ali', customer_review: 'asgdjaskbdbaj', business_title: 'Hameed clinic', rating: 5, time: moment().format('MMMM Do YYYY'), business_email: props?.route?.params?.data?.email }]);
+    const [reviews, setReviews] = useState([]);
     const [reviewsCount, setReviewsCount] = useState(0);
     const [reviewsAverage, setReviewsAverage] = useState(0);
     let fiveRating = reviews.filter((item) => item.rating == 5).length
@@ -43,12 +45,31 @@ const BusinessProfile = (props) => {
     const [rating, setRating] = useState(0);
     const [data, setData] = useState([props.route?.params?.data]);
     const [services, setServices] = useState([]);
+    const [userData, setUserData] = useState();
     const [queryResult, setQueryResult] = useState([]);
     const servicesRef = collection(db, "services");
     const reviewsRef = collection(db, "reviews");
+    const time = moment().format('MMMM Do YYYY h:mm:ss a');
 
+    const getUserData = () => {
+        const myDoc = doc(db, "users", auth.currentUser.uid)
+        getDocs(myDoc)
+            .then((snapshot) => {
 
-    const time = moment().format('MMMM Do YYYY');
+                if (snapshot.exists) {
+                    setUserData(snapshot.data())
+                    // console.log(storedCredentials);
+                    console.log(myDoc)
+                }
+                else {
+                    console.log("No User Data")
+                }
+            })
+            .catch((error) => {
+                console.log(error.message)
+
+            })
+    }
 
     const getServices = async () => {
         const q = query(servicesRef, where("business_email", "==", props?.route?.params?.data?.email));
@@ -59,10 +80,6 @@ const BusinessProfile = (props) => {
                     ...doc.data(),
                     id: doc.id
                 })));
-
-                // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-                console.log(services);
             })
             .catch((err) => {
                 console.log(err);
@@ -70,7 +87,8 @@ const BusinessProfile = (props) => {
     };
 
     const getReviews = async () => {
-        const q = query(reviewsRef, where("business_email", "==", props?.route?.params?.data?.email));
+        const q = query(reviewsRef, where("business_email", "==", props?.route?.params?.data?.
+            email));
         setQueryResult(q);
         await getDocs(q)
             .then((res) => {
@@ -78,9 +96,6 @@ const BusinessProfile = (props) => {
                     ...doc.data(),
                     id: doc.id
                 })));
-
-                // console.log(res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
                 console.log("reviews",
                     reviews);
             })
@@ -89,31 +104,52 @@ const BusinessProfile = (props) => {
             });
     };
 
+    const addReview = () => {
+        const reviewsCollection = collection(db, "reviews");
+        const review = {
+            customer_name: userData?.name,
+            business_name: props?.route?.params?.data?.business_name,
+            rating: rating,
+            business_email: props?.route?.params?.data?.business_email,
+            customer_email: userData?.email,
+            customer_review: reviewText,
+            time: time,
+
+        }
+
+        addDoc(reviewsCollection, review)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    };
+
 
     useEffect(() => {
         getServices();
-        // getReviews();
-        console.log(props?.route?.params?.data)
-        // console.log(services)
-        // console.log(data.name)
+        getReviews();
+        // getUserData();
+        // console.log("reviews.length", reviews.length)
     }, [])
 
-    useEffect(() => {
-        const sendVerificationEmail = async () => {
-            const user = auth.currentUser.uid;
+    // useEffect(() => {
+    //     const sendVerificationEmail = async () => {
+    //         const user = auth.currentUser.uid;
 
-            if (user) {
-                try {
-                    await user.sendEmailVerification();
-                    console.log('Verification email sent successfully.');
-                } catch (error) {
-                    console.error('Error sending verification email:', error);
-                }
-            }
-        };
+    //         if (user) {
+    //             try {
+    //                 await user.sendEmailVerification();
+    //                 console.log('Verification email sent successfully.');
+    //             } catch (error) {
+    //                 console.error('Error sending verification email:', error);
+    //             }
+    //         }
+    //     };
 
-        sendVerificationEmail();
-    }, []);
+    //     sendVerificationEmail();
+    // }, []);
 
     const FirstRoute = () => (
         <View style={{ flex: 1, backgroundColor: '#fff', margin: 10, }}>
@@ -239,9 +275,9 @@ const BusinessProfile = (props) => {
 
                 {/* END of Overall rating card */}
 
-                {showReview === true ? (
+                {showReview === true && reviews.client_email != auth.currentUser.email ? (
                     <View style={{ height: "25%", width: '90%', borderColor: 'black', borderWidth: 0.5, borderRadius: 10, padding: 10 }} >
-                        <View style={{}}>
+                        <View >
                             <StarRating
                                 rating={reviewRating}
                                 onChange={setReviewRating}

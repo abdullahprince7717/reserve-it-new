@@ -4,6 +4,7 @@ import Card from '../../components/businessUIComponents/ServiceCard.js'
 import { FAB } from 'react-native-paper';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
 import { collection, getDocs, doc, setDoc, query, where } from "firebase/firestore";
+import { useFocusEffect } from '@react-navigation/native';
 
 const ServicesList = (props) => {
 

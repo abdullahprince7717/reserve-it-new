@@ -42,7 +42,8 @@ const SignIn = ({ navigation }) => {
   }, [])
 
   const handleLogin = () => {
-    auth.signInWithEmailAndPassword(email.trim(), password)
+    auth.signInWithEmailAndPassword(email.trim(), password
+    )
       .then((credentials) => {
 
         const user = credentials.user;

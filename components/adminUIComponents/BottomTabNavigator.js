@@ -16,58 +16,58 @@ function TabNavigation(props) {
             initialRouteName="Home"
             activeColor='red'
             inactiveColor="#000"
-            barStyle={{ 
+            barStyle={{
                 backgroundColor: '#fff',
                 position: 'absolute',
-                // bottom: 10,
-                // left: 10,
-                // right: 10,
-                height: 55,
+                bottom: 10,
+                left: 10,
+                right: 10,
+                height: 65,
                 elevation: 1,
-                // borderRadius: 20,
+                borderRadius: 20,
                 borderColor: 'grey',
-                borderWidth:0.5,
+                borderWidth: 0.5,
                 overflow: 'hidden',
-                // borderTopLeftRadius: 20,
-                // borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
             }}
         >
 
-            <Tab.Screen name="Home" 
-            component={Home}
-            options={{
-                tabBarLabel: 'Home',
-                tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-                ), 
-            }}
+            <Tab.Screen name="Home"
+                component={Home}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="home-outline" color={color} size={26} />
+                    ),
+                }}
             />
 
-            <Tab.Screen name="Complaints" 
-            component={Complaints}
-            options={{
-                tabBarLabel: 'Complaints',
-                tabBarIcon: ({ color }) => (
-                    <MaterialIcons name="report" color={color} size={26} />
-                ), 
-            }}
+            <Tab.Screen name="Complaints"
+                component={Complaints}
+                options={{
+                    tabBarLabel: 'Complaints',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialIcons name="report" color={color} size={26} />
+                    ),
+                }}
             />
 
-            <Tab.Screen name="Settings" 
-            component={Settings}
-            options={{
-                tabBarLabel: 'Settings',
-                tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="cog-outline" color={color} size={26} />
-                ), 
-            }}
-            
+            <Tab.Screen name="Settings"
+                component={Settings}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="cog-outline" color={color} size={26} />
+                    ),
+                }}
+
             />
 
-            
-        
+
+
         </Tab.Navigator>
-    
+
 
     );
 }

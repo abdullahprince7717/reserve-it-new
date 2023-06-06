@@ -39,15 +39,15 @@ function MyStack() {
             initialRouteName="Signup"
             screenOptions={{
                 headerTintColor: 'black',
-                headerStyle: { opacity:0.5 },
+                headerStyle: { opacity: 0.5 },
                 // headerShown: false,
             }}
         >
-            
+
             <Stack.Screen
                 name="Home"
                 component={TabNavigation}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
 
             <Stack.Screen
@@ -101,91 +101,100 @@ function MyStack() {
             <Stack.Screen
                 name="Signup"
                 component={Signup}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="Login"
                 component={Login}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="CheckoutAppointment"
                 component={CheckoutAppointment}
-                options={{headerShown: true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="CheckoutService"
                 component={CheckoutService}
-                options={{headerShown: true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="ForgotPassword"
                 component={ForgotPassword}
-                options={{headerShown: true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="AccountSetup1"
                 component={AccountSetup1}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Business Account Setup',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup2"
                 component={AccountSetup2}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Business Details',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup3"
                 component={AccountSetup3}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Your Business Location',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup3test"
                 component={AccountSetup3test}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Your Business Location',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup4"
                 component={AccountSetup4}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Your Business Hours',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup4b"
                 component={AccountSetup4b}
-                options={{headerShown: true}}
+                options={{
+                    headerShown: true,
+                    title: 'Set Business Hours'
+                }}
             />
             <Stack.Screen
                 name="AccountSetup5"
                 component={AccountSetup5}
-                options={{headerShown: true,
+                options={{
+                    headerShown: true,
                     title: 'Your Business Services',
                 }}
             />
             <Stack.Screen
                 name="AccountSetup6"
                 component={AccountSetup6}
-                options={{headerShown: true}}
+                options={{ headerShown: true }}
             />
 
             <Stack.Screen
                 name="AddImages"
                 component={AddImages}
-                options={{headerShown: true}}
+                options={{ headerShown: true }}
             />
             <Stack.Screen
                 name="AdminStack"
                 component={AdminStack}
             />
-            
+
 
         </Stack.Navigator>
     );

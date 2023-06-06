@@ -219,6 +219,7 @@ const SignUp = ({ navigation }) => {
                   <TextInput
                     placeholder="Phone number"
                     value={values.phone}
+                    keyboardType='numeric'
                     placeholderTextColor={"#fff"}
                     onBlur={() => setFieldTouched('phone')}
                     onChangeText={handleChange('phone')}

@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TabNavigation from '../components/adminUIComponents/BottomTabNavigator.js';
-
 import Home from '../screens/adminInterface/Home.js';
 import Complaints from '../screens/adminInterface/Complaints.js';
 import Settings from '../screens/adminInterface/Settings.js';
@@ -30,7 +29,7 @@ function MyStack() {
             <Stack.Screen
                 name="Home"
                 component={TabNavigation}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
 
             <Stack.Screen
@@ -45,39 +44,39 @@ function MyStack() {
             <Stack.Screen
                 name="Login"
                 component={Login}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="AddBusiness"
                 component={AddBusiness}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
             <Stack.Screen
                 name="AddClient"
                 component={AddClient}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
             <Stack.Screen
                 name="BusinessProfile"
                 component={BusinessProfile}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
             <Stack.Screen
                 name="ClientProfile"
                 component={ClientProfile}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
             <Stack.Screen
                 name="BlockedBusinesses"
                 component={BlockedBusinesses}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
             <Stack.Screen
                 name="BlockedClients"
                 component={BlockedClients}
-                // options={{headerShown: false}}
+            // options={{headerShown: false}}
             />
-        
+
         </Stack.Navigator>
     );
 }

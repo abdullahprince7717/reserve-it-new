@@ -76,7 +76,6 @@ const BusinessDetails = (props) => {
             business_name: values.name,
             business_address: values.address,
             business_email: values.email,
-            category: values.category,
             business_phone: values.phone,
             business_description: values.description,
             instagram: values.instagram,
@@ -85,6 +84,7 @@ const BusinessDetails = (props) => {
 
         }
         console.log(auth.currentUser.uid)
+        console.log(values.name)
 
         await setDoc(businessDoc, business, { merge: true })
             .then(
@@ -142,7 +142,7 @@ const BusinessDetails = (props) => {
                 </Text>
                 <Formik
                     initialValues={{ name: '', email: '', phone: '', address: '', description: '', category: '', instagram: '', facebook: '', image: '' }}
-                    validationSchema={SignupSchema}
+                    validationSchema={accountSetupSchema}
                 >
                     {({ errors, values, touched, handleChange, setFieldTouched }) => (
                         <View>
@@ -195,7 +195,7 @@ const BusinessDetails = (props) => {
                                 />
                             </View>
                             {touched.phone && <Text style={{ color: 'red' }}>{errors.phone}</Text>}
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                            <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', }}>
                                 <TextInput
                                     label="Business Description"
                                     placeholderTextColor={"grey"}
@@ -207,15 +207,15 @@ const BusinessDetails = (props) => {
                                     onBlur={() => setFieldTouched('description')}
                                     onChangeText={handleChange('description')}
                                 />
+                                {touched.description && <Text style={{ color: 'red' }}>{errors.description}</Text>}
                             </View>
-                            {touched.description && <Text style={{ color: 'red' }}>{errors.description}</Text>}
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <DropDownPicker
                                     open={open}
-                                    value={values.category}
+                                    value={category}
                                     items={items}
                                     setOpen={setOpen}
-                                    setValue={handleChange('category')}
+                                    setValue={setCategory}
                                     onBlur={() => setFieldTouched('category')}
                                     setItems={setItems}
                                     style={{
@@ -238,8 +238,9 @@ const BusinessDetails = (props) => {
                                         fontWeight: "bold"
                                     }}
                                 />
+                                {touched.category && <Text style={{ color: 'red' }}>{errors.category}</Text>}
                             </View>
-                            {touched.category && <Text style={{ color: 'red' }}>{errors.category}</Text>}
+
                             <Text style={{ fontSize: 20, fontWeight: 'bold', margin: 10, marginTop: 20 }}>
                                 Social Media
                             </Text>
@@ -248,6 +249,7 @@ const BusinessDetails = (props) => {
                                 <TextInput
                                     placeholder="Instagram"
                                     placeholderTextColor={"grey"}
+                                    mode="outlined"
                                     style={styles.textInput}
                                     value={values.instagram}
                                     onBlur={() => setFieldTouched('instagram')}
@@ -259,6 +261,7 @@ const BusinessDetails = (props) => {
                                 <TextInput
                                     placeholder="Facebook"
                                     placeholderTextColor={"grey"}
+                                    mode="outlined"
                                     style={styles.textInput}
                                     value={values.facebook}
                                     onBlur={() => setFieldTouched('facebook')}
@@ -293,27 +296,8 @@ const BusinessDetails = (props) => {
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={() => {
-
-                                        if (errors.name || errors.email || errors.address || errors.phone || errors.description || errors.category || errors.instagram || errors.facebook) {
-                                            Alert.alert(
-                                                "Please fill all the fields correctly",
-                                                "",
-                                                [
-                                                    {
-                                                        text: "Cancel",
-                                                        onPress: () => console.log("Cancel Pressed"),
-                                                        style: "cancel"
-                                                    },
-                                                    { text: "OK", onPress: () => console.log("OK Pressed") }
-                                                ],
-                                                { cancelable: false }
-                                            );
-                                            return;
-                                        }
-                                        else {
-                                            uploadImage(values);
-                                            props.navigation.navigate('AccountSetup3')
-                                        }
+                                        uploadImage(values);
+                                        props.navigation.navigate('AccountSetup3')
 
                                     }}
                                 >
@@ -347,7 +331,7 @@ const styles = StyleSheet.create({
     textInput: {
         width: '85%',
         // borderWidth:1,
-        // borderColor: '#000',
+        borderColor: '#000',
         height: 50,
         borderRadius: 10,
         paddingLeft: 10,

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Dimensions, ScrollView, StatusBar, Text } from "react-native";
-import { Button, Searchbar, RadioButton } from 'react-native-paper'
+import { Button, Searchbar } from 'react-native-paper'
 import BusinessCard from '../../components/explore/Card.js';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { FAB } from 'react-native-paper';
 import { db, auth, } from "../../firebase/FirebaseConfig.js";
 import { doc, getDoc, setDoc, collection, getDocs, where, query, limit } from "firebase/firestore";
-import { useFocusEffect } from '@react-navigation/native';
+// import firestore from '@react-native-firebase/firestore';
+import { RadioButton } from 'react-native-paper';
+
+
+
+// import {GOOGLE_MAPS_APIKEY} from "@env";
+
 
 function Explore(props) {
 
@@ -309,13 +315,16 @@ function Explore(props) {
         "Other"]
 
     const [selectedCity, setSelectedCity] = useState();
+
+
     const [searchQuery, setSearchQuery] = useState("");
     const onChangeSearch = query => setSearchQuery(query);
     const [queryResult, setQueryResult] = useState([]);
-    const [checked, setChecked] = useState(props?.route?.params?.query ? 'second' : 'first');
+    const [checked, setChecked] = useState('first');
 
 
     const collectionRef = collection(db, "business_users")
+
     const getQueryResult = async () => {
         let q
         checked == 'first' ?
@@ -330,28 +339,25 @@ function Explore(props) {
                     ...doc.data(),
                     id: doc.id
                 })));
-                setSearchQuery("");
 
-                console.log(queryResult, 'queryResult');
+                // console.log("response " + res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+                // console.log("response " + res);
+                console.log(queryResult);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-
-    useFocusEffect(
-        React.useCallback(() => {
-
-            props?.route?.params?.query ?
-                setSearchQuery(props?.route?.params?.query) : null
-
-        }, []))
-
+    useEffect(() => {
+        props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
+    }, [])
 
 
     useEffect(() => {
         getQueryResult();
+        console.log(auth.currentUser.email)
+        console.log(searchQuery)
     }, [searchQuery]);
 
     return (
@@ -366,7 +372,7 @@ function Explore(props) {
                             value={searchQuery}
                             style={styles.searchBar}
                         />
-                        <Button mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20, backgroundColor: "#000" }}
+                        <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
                             onPress={() => {
                                 console.log('Pressed')
                                 getQueryResult()
@@ -377,8 +383,8 @@ function Explore(props) {
                         </Button>
                     </View>
                 </View>
-                <View style={{ paddingLeft: 10, width: '100%' }}>
-                    <Text style={{ color: '#fff', fontSize: 18, backgroundColor: '#000', }}>Search By:</Text>
+                <View style={{ marginLeft: 10, }}>
+                    <Text style={{ color: '#fff', fontSize: 18 }}>Search By:</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', backgroundColor: '#000', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
                     <View style={{ flexDirection: "row" }}>
@@ -401,6 +407,8 @@ function Explore(props) {
                     </View>
 
                 </View>
+
+
 
             </View>
 
@@ -426,8 +434,6 @@ function Explore(props) {
                                     }}
                                 />
                         ))}
-
-
                     </View>
                 </ScrollView>
 
@@ -437,11 +443,11 @@ function Explore(props) {
                     large
                     icon="map-marker-outline"
                     onPress={() => {
+                        console.log('Pressed')
                         props.navigation.navigate('Map', { data: queryResult })
                     }}
                     color='#fff'
                 />
-
             </View>
         </View>
     );

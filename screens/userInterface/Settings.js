@@ -62,7 +62,6 @@ function Settings(props) {
                 <View style={styles.userInfoSection}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Title style={styles.title}>
-                            {/* Abdullah Ali */}
                             <Text>{userData?.name}</Text>
                         </Title>
 

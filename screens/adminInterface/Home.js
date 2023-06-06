@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, ScrollView, useWindowDimensions, StatusBar, } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { Button,Searchbar } from 'react-native-paper'
+import { Button, Searchbar } from 'react-native-paper'
 import CustomerCard from '../../components/adminUIComponents/home/CustomerCard.js'
 import { db, auth, } from "../../firebase/FirebaseConfig.js";
 import { doc, getDoc, setDoc, collection, getDocs, where, query } from "firebase/firestore";
 import { Ionicons } from '@expo/vector-icons'
-
-// import Modal from "react-native-modal";
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = (props) => {
 
@@ -22,65 +21,44 @@ const Home = (props) => {
     const [queryResult2, setQueryResult2] = useState([]);
 
 
-    const businessCollectionRef = collection(db, "business_users")
     const customerCollectionRef = collection(db, "users")
+    const collectionRef = collection(db, "business_users")
 
     const getQueryResult = async () => {
-
-        let q1
-        if(setSearchQuery != "" ){
-            q1 = query(businessCollectionRef, where("business_name", "==", searchQuery))
-        }
-        else{
-            q1 = query(customerCollectionRef)
-        }
-
-
-        await getDocs(q1)
+        let q = query(collectionRef, where("name", "==", searchQuery))
+        await getDocs(q)
             .then((res) => {
-
                 setQueryResult(res.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id
                 })));
-
-                // console.log("response " + res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-                console.log("response " + res);
-                console.log(queryResult);
             })
             .catch((err) => {
                 console.log(err);
             });
-
     };
 
+
     const getQueryResult2 = async () => {
-        let q2
-        if(searchQuery2 != "" ){
-            q2 = query(customerCollectionRef, where("name", "==", searchQuery2))
-        }
-        else{
-            q2 = query(customerCollectionRef)
-        }
-
-
-        await getDocs(q2)
+        let q = query(collectionRef, where("name", "==", searchQuery2))
+        await getDocs(q)
             .then((res) => {
-
-                setQueryResult2(res.docs.map((doc) => ({
+                setQueryResult(res.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id
                 })));
-
-                // console.log("response " + res.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-                console.log("response " + res);
-                console.log(queryResult2);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
+    useFocusEffect(
+        React.useCallback(() => {
+            props?.route?.params?.query ?
+                setSearchQuery(props?.route?.params?.query) : null
+
+        }, []))
 
     useEffect(() => {
         // props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
@@ -88,40 +66,31 @@ const Home = (props) => {
         getQueryResult2();
         // console.log(auth.currentUser.email)
         console.log(searchQuery)
-
-
     }, []);
 
-    // useEffect(() => {
-    //     // props?.route?.params?.query ? setSearchQuery(props?.route?.params?.query) : null;
-    //     getQueryResult2();
-    //     // console.log(auth.currentUser.email)
-    //     console.log(searchQuery2)
 
-
-    // }, []);
 
     const FirstRoute = () => (
         <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center', }}>
             <View style={styles.searchBar}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <Searchbar
-                            placeholder="Search"
-                            onChangeText={onChangeSearch2}
-                            value={searchQuery2}
-                            style={styles.searchBar}
-                        />
-                        <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
-                            onPress={() => {
-                                console.log('Pressed')
-                                getQueryResult2()
-                            }}>
+                <View style={{ flexDirection: 'row', }}>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch2}
+                        value={searchQuery2}
+                        style={styles.searchBar}
+                    />
+                    <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
+                        onPress={() => {
+                            console.log('Pressed')
+                            getQueryResult2()
+                        }}>
 
-                            <Ionicons name="search" size={23} color='#fff' />
+                        <Ionicons name="search" size={23} color='#fff' />
 
-                        </Button>
-                    </View>
+                    </Button>
                 </View>
+            </View>
 
             <View style={{ width: '93%', backgroundColor: 'grey', height: 2 }}></View>
 
@@ -132,46 +101,41 @@ const Home = (props) => {
                 >
 
                     {queryResult2?.map((item, index) => (
-                        // <Text>{item.id}</Text>
-                        // item.business_name === "" ? null :
 
-                            <CustomerCard title={item.name} phone={item.phone} email={item.email}
-                                onPress={() => {
-                                    console.log('Pressed')
-                                    props.navigation.navigate('ClientProfile',{ data: queryResult2[index]})
-                                }} />
+                        <CustomerCard title={item.name} phone={item.phone} email={item.email}
+                            onPress={() => {
+                                console.log('Pressed')
+                                props.navigation.navigate('ClientProfile', { data: queryResult2[index] })
+                            }} />
                     ))}
 
-
                 </ScrollView>
-
-
             </View>
         </View>
     );
 
     const SecondRoute = () => (
 
-        <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center', }}>
-             <View style={styles.searchBar}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <Searchbar
-                            placeholder="Search"
-                            onChangeText={onChangeSearch}
-                            value={searchQuery}
-                            style={styles.searchBar}
-                        />
-                        <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
-                            onPress={() => {
-                                console.log('Pressed')
-                                getQueryResult()
-                            }}>
+        <View style={{ flex: 1, backgroundColor: '#fff', alignItems: 'center' }}>
+            <View style={styles.searchBar}>
+                <View style={{ flexDirection: 'row' }}>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={onChangeSearch}
+                        value={searchQuery}
+                        style={styles.searchBar}
+                    />
+                    <Button color="#000" mode="contained" style={{ height: 40, padding: 0, width: 30, borderColor: "#fff", marginTop: 14, borderRadius: 20 }}
+                        onPress={() => {
+                            console.log('Pressed')
+                            getQueryResult()
+                        }}>
 
-                            <Ionicons name="search" size={23} color='#fff' />
+                        <Ionicons name="search" size={23} color='#fff' />
 
-                        </Button>
-                    </View>
+                    </Button>
                 </View>
+            </View>
 
             <View style={{ width: '93%', backgroundColor: 'grey', height: 2 }}></View>
 
@@ -180,15 +144,15 @@ const Home = (props) => {
 
                 <ScrollView >
 
-                {queryResult?.map((item, index) => (
+                    {queryResult?.map((item, index) => (
                         // <Text>{item.id}</Text>
                         // item.business_name === "" ? null :
 
-                            <CustomerCard title={item.business_name} phone={item.business_phone} email={item.business_email}
-                                onPress={() => {
-                                    console.log('Pressed')
-                                    props.navigation.navigate('BusinessProfile',{ data: queryResult[index]})
-                                }} />
+                        <CustomerCard title={item.business_name} phone={item.business_phone} email={item.business_email}
+                            onPress={() => {
+                                console.log('Pressed')
+                                props.navigation.navigate('BusinessProfile', { data: queryResult[index] })
+                            }} />
                     ))}
 
 
@@ -197,14 +161,6 @@ const Home = (props) => {
         </View>
 
     );
-
-    // const ThirdRoute = () => (
-    //     <View style={{ flex: 1, backgroundColor: '#fff',alignItems: 'center',}} >
-    //         <ScrollView>
-
-    //         </ScrollView>
-    //     </View>
-    // );
 
     const renderScene = SceneMap({
         first: FirstRoute,
@@ -267,7 +223,7 @@ styles = StyleSheet.create({
     container: {
 
         flex: 1,
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         // backgroundColor: 'grey',
     },
     searchView: {
