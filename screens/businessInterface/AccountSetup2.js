@@ -142,7 +142,7 @@ const BusinessDetails = (props) => {
                 </Text>
                 <Formik
                     initialValues={{ name: '', email: '', phone: '', address: '', description: '', category: '', instagram: '', facebook: '', image: '' }}
-                    // validationSchema={SignupSchema}
+                // validationSchema={SignupSchema}
                 >
                     {({ errors, values, touched, handleChange, setFieldTouched }) => (
                         <View>
