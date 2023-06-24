@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, ScrollView, Image, TouchableOpacity, StatusBar, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ScrollView, Image, TouchableOpacity, StatusBar, Alert,ActivityIndicator } from 'react-native';
 import { db, auth } from '../../firebase/FirebaseConfig.js'
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, SignInWithRedirect, FacebookAuthProvider } from "firebase/auth";
@@ -7,8 +7,7 @@ import { MaterialIndicator } from 'react-native-indicators';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const SignUp = ({ route, navigation }) => {
-
+const SignUp = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -154,8 +153,6 @@ const SignUp = ({ route, navigation }) => {
             })
     }
 
-    const [type,setType] = useState();
-
     const signUp = () => {
         setLoading(true);
         createUserWithEmailAndPassword(auth, email.trim(), password)
@@ -187,7 +184,6 @@ const SignUp = ({ route, navigation }) => {
         // {loading == true ? <MaterialIndicator color='black' />: navigation.navigate("AccountSetup1")}
     }
 
-    console.log('type is ',type)
 
 
     return (
@@ -206,28 +202,7 @@ const SignUp = ({ route, navigation }) => {
                 </View>
 
                 <ScrollView style={styles.downView}>
-
-                    <Text style={styles.heading}> Sign Up Selected Type is {type} </Text>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around',marginTop:15,marginBottom:-15 }}>
-                        <TouchableOpacity
-                        onPress={
-                            ()=>{
-                                setType('Business')
-                            }
-                        }
-                        style={{flex:.3,padding:8,backgroundColor:'#fff',alignItems:'center'}}><Text>Business</Text></TouchableOpacity>
-                        <TouchableOpacity
-                        
-                        onPress={
-                            ()=>{
-                                setType('Admin')
-                            }
-                        }
-                        
-                        style={{flex:.3,padding:8,backgroundColor:'#fff',alignItems:'center'}}><Text>Admin</Text></TouchableOpacity>
-                    </View>
-
+                    <Text style={styles.heading}> Sign Up as Business </Text>
                     <Formik
                         initialValues={{ name: '', email: '', phone, password: '', confirmPassword: '', }}
                         onSubmit={values => console.log(values)}

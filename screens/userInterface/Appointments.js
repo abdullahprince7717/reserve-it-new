@@ -102,7 +102,7 @@ function Appointments(props) {
 
     const cancelAppointment = (appointment) => {
 
-        if (appointment.date === moment().format("YYYY-MM-DD") && appointment.time < moment().format("HH:mm")) {
+        if (appointment?.date === moment().format("YYYY-MM-DD") && appointment?.time < moment().format("HH:mm")) {
             if (moment().format("HH:mm") - appointment.time < 45) {
                 console.log("You cannot cancel this appointment");
             }
@@ -167,7 +167,7 @@ function Appointments(props) {
             <View>
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_pending === true
+                    appointments[index]?.status?.is_pending === true
                         && appointments[index].customer_email == auth.currentUser.email ? (<>
                             <Card
                                 title={item.service_name}
@@ -203,7 +203,7 @@ function Appointments(props) {
             <View>
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_completed === true
+                    appointments[index]?.status?.is_completed === true
                         && appointments[index].customer_email == auth.currentUser.email ? (
                         <Card
                             title={item.service_name}
@@ -244,7 +244,7 @@ function Appointments(props) {
             <View>
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_cancelled === true
+                    appointments[index]?.status?.is_cancelled === true
                         && appointments[index].customer_email == auth.currentUser.email ? (<>
                             <Card
                                 title={item.service_name}

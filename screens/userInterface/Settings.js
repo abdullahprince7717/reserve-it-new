@@ -1,5 +1,5 @@
-import { View, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
-import { Text, Caption, Title, TouchableRipple, } from 'react-native-paper'
+import { View, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, Image } from "react-native";
+import { Text, Caption, Title, TouchableRipple } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icons from 'react-native-vector-icons/MaterialIcons'
 import { FontAwesome, EvilIcons } from "@expo/vector-icons/"
@@ -58,12 +58,55 @@ function Settings(props) {
     // </SafeAreaView>
     return (
         <SafeAreaView style={styles.container}>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: .3, }}>
+                    <TouchableOpacity style={{ marginStart: 5 }}>
+                        <View style={{ height: 80, width: 80, borderRadius: 40, alignItems: 'center',paddingTop:5 }}>
+                            <Image source={require('../../assets/user.jpeg')} style={{ height: 80, width: 80, borderRadius: 40, resizeMode: 'contain' }} />
+                          
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flex: .7,  }}>
+                    <Text style={{ fontSize: 22,marginBottom:10 }}>{userData?.name}</Text>
+                    <View style={styles.row}>
+                        <Icon
+                            name="phone"
+                            color='#000'
+                            size={15}
+                        />
+                        <Text style={{ marginLeft: 5 }}>
+                            <Text>Phone: {userData?.phone}</Text>
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                            <Icon
+                                name="email"
+                                color='#000'
+                                size={15}
+                            />
+                            <Text style={{ marginLeft: 5 }}>
+                                <Text>Email  {userData?.email}</Text>
+                            </Text>
+                        </View>
+
+                        <TouchableOpacity
+                        style={{position:'absolute',right:20}}
+                            onPress={() => {
+                                console.log('Pressed')
+                                props.navigation.navigate('EditProfile')
+                            }}>
+                            <FontAwesome color="black" name="edit" size={27} />
+
+                        </TouchableOpacity>
+                </View>
+            </View>
             {loading === false ? <>
                 <View style={styles.userInfoSection}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Title style={styles.title}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <Title style={styles.title}> */}
                             {/* Abdullah Ali */}
-                            <Text>{userData?.name}</Text>
+                            {/* <Text>{userData?.name}</Text>
                         </Title>
 
                         <TouchableOpacity
@@ -75,13 +118,15 @@ function Settings(props) {
 
                         </TouchableOpacity>
 
-                    </View>
+                    </View> */}
 
                     {/* <Caption style = {styles.caption}>
                     Username
                 </Caption> */}
 
-                    <View style={styles.userInfoSection}>
+
+
+                    {/* <View style={styles.userInfoSection}>
 
                         {(userData?.address) ?
                             <View style={styles.row}>
@@ -118,7 +163,7 @@ function Settings(props) {
                                 <Text>Email  {userData?.email}</Text>
                             </Text>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
 
                 <View style={{ borderBottomColor: 'grey', borderBottomWidth: 0.5 }} />

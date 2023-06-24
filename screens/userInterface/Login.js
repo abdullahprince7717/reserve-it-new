@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Image, TouchableOpacity,ActivityIndicator } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react'
 import { auth } from '../../firebase/FirebaseConfig.js'
 import { CredentialsContext } from '../../global/CredentialsContext';
@@ -8,6 +8,7 @@ import { getAuth, sendEmailVerification } from "firebase/auth";
 // import {Spinner} from 'react-native-loading-spinner-overlay';
 
 // import MyStack from '../../Navigation/AdminUIStack.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -15,8 +16,10 @@ const SignIn = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [storedCredentials, setStoredCredentials] = useContext(CredentialsContext);
+
 
   // const [IsSignedIn, setIsSignedIn] = useState(false);
 
@@ -26,7 +29,7 @@ const SignIn = ({ navigation }) => {
     const subscribe = auth.onAuthStateChanged(user => {
 
       if (user) {
-        if (storedCredentials.email === "admin123@gmail.com") {
+        if (storedCredentials?.email === "admin123@gmail.com") {
           navigation.replace("AdminStack", { screen: 'Home' });
           console.log("admin")
         }
@@ -41,26 +44,38 @@ const SignIn = ({ navigation }) => {
 
   }, [])
 
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('userEmail', value)
+    } catch (e) {
+      // saving error
+    }
+  }
+
   const handleLogin = () => {
+    setLoading(true);
     auth.signInWithEmailAndPassword(email.trim(), password)
       .then((credentials) => {
-
+        setLoading(false)
         const user = credentials.user;
         console.log('loggedIn as email = ' + user?.email);
+        
         setStoredCredentials({ email: email.trim(), password: password })
         if (email === 'admin@reserveit.com' && password === '12345678') {
           navigation.navigate("AdminStack", { screen: 'Home' });
         }
 
-
+        storeData(user?.email);
         // setIsSignedIn(true);
 
       })
       .catch((error) => {
+        setLoading(false);
         console.log("Error Message :" + error.message);
 
         console.log("Error Code :" + error.code);
-        alert(error.message);
+        alert('Check your internet connection & please try again');
 
       })
   }
@@ -82,12 +97,20 @@ const SignIn = ({ navigation }) => {
 
   return (
     <>
+      {loading &&
+        (
+          <View style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size={30} />
+            <Text style={{ color: 'white', fontSize: 15 }}>Please Wait</Text>
+          </View>
+        )
+      }
       <View style={styles.mainView}>
         <View style={styles.upView}>
           <Image style={{ resizeMode: 'contain', height: '70%' }} source={require('../../assets/logo.png')} />
         </View>
         <View style={styles.downView}>
-          <Text style={styles.heading}> Sign In </Text>
+          <Text style={styles.heading}> Sign In as Customer</Text>
 
           <View style={styles.form}>
             <TextInput
@@ -169,9 +192,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: 30,
     marginLeft: 20,
-    color: '#fff',
+    color: '#57B9BB',
     width: '80%',
-    fontSize: 42,
+    fontSize: 20,
     fontWeight: 'bold',
     backgroundColor: '#000'
   },

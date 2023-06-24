@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword, signInWithRedirect, FacebookAuthProvide
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { ActivityIndicator } from 'react-native-paper';
 // import {Spinner} from 'react-native-loading-spinner-overlay';
 
 // import { getNotificationInbox } from 'native-notify';
@@ -69,8 +70,8 @@ const SignUp = ({ navigation }) => {
       })
   }
 
-  const signUp = () => {
-    // setLoading = true;
+  const signUpUser = () => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email.trim(), password)
       .then((credentials) => {
         navigation.replace("Home")
@@ -165,10 +166,11 @@ const SignUp = ({ navigation }) => {
 
       })
       .catch((error) => {
+        setLoading(false)
         console.log("Error Message :" + error.message);
-
         console.log("Error Message :" + error.code);
-        alert(error.message)
+        alert('Something went wrong please try again')
+
       })
 
   }
@@ -176,12 +178,23 @@ const SignUp = ({ navigation }) => {
 
   return (
     <>
+      {loading &&
+        (
+          <View style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size={30} />
+            <Text style={{ color: 'white', fontSize: 15 }}>Please Wait</Text>
+          </View>
+        )
+      }
+
+
       <View style={styles.mainView}>
         <View style={styles.upView}>
           <Image style={{ resizeMode: 'contain', height: '70%' }} source={require('../../assets/logo.png')} />
         </View>
         <ScrollView style={styles.downView}>
-          <Text style={styles.heading}> Sign Up </Text>
+
+          <Text style={styles.heading}> Sign Up as Customer </Text>
 
           <View style={styles.form}>
             <Formik
@@ -200,7 +213,7 @@ const SignUp = ({ navigation }) => {
                     style={styles.textInput}
 
                   />
-                  {touched.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
+                  {touched.name && <Text style={{ color: 'white' }}>{errors.name}</Text>}
                   <TextInput
                     placeholder="Email"
                     value={values.email}
@@ -209,7 +222,7 @@ const SignUp = ({ navigation }) => {
                     onChangeText={handleChange('email')}
                     style={styles.textInput}
                   />
-                  {touched.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+                  {touched.email && <Text style={{ color: 'white' }}>{errors.email}</Text>}
                   {/* <Spinner
 
               visible={loading}
@@ -224,7 +237,7 @@ const SignUp = ({ navigation }) => {
                     onChangeText={handleChange('phone')}
                     style={styles.textInput}
                   />
-                  {touched.phone && <Text style={{ color: 'red' }}>{errors.phone}</Text>}
+                  {touched.phone && <Text style={{ color: 'white' }}>{errors.phone}</Text>}
                   <TextInput
                     placeholder="Password"
                     value={values.password}
@@ -234,19 +247,22 @@ const SignUp = ({ navigation }) => {
                     placeholderTextColor={"#fff"}
                     style={styles.textInput}
                   />
-                  {touched.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+                  {touched.password && <Text style={{ color: 'white' }}>{errors.password}</Text>}
 
                   <TouchableOpacity style={styles.button}
                     onPress={() => {
+
                       if (errors.name || errors.email || errors.phone || errors.password) {
                         alert("Please fill all the fields accordingly")
-                        return;
+                        // return;
+                      } else {
+                        setName(values.name);
+                        setEmail(values.email);
+                        setPhone(values.phone);
+                        setPassword(values.password);
+                        signUpUser();
                       }
-                      setName(values.name);
-                      setEmail(values.email);
-                      setPhone(values.phone);
-                      setPassword(values.password);
-                      signUp();
+
                     }} >
                     <Text>Sign Up </Text>
                   </TouchableOpacity>
@@ -330,9 +346,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: 30,
     marginLeft: 20,
-    color: '#fff',
+    color: '#57B9BB',
     width: '80%',
-    fontSize: 42,
+    fontSize: 20,
     fontWeight: 'bold',
     backgroundColor: '#000',
     borderTopLeftRadius: 80,

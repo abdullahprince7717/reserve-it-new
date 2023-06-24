@@ -25,9 +25,9 @@ import BusinessStack from '../Navigation/BusinessUIStack.js';
 import MainScreen from '../screens/userInterface/MainScreen.js'
 import OnBoardingScreen from '../screens/userInterface/OnBoardingScreen.js'
 import Reviews from '../screens/userInterface/Reviews.js'
+import AdminHome from '../screens/adminInterface/AdminHome.js';
 
 // import TimeSlot from '../components/appointments/TimeSlotCreator.js';
-
 // import { CredentialsContext } from './../components/CredentialsContext.js';
 
 
@@ -153,6 +153,14 @@ function MyStack() {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen
+                name="AdminHome"
+                component={AdminHome}
+                options={{
+                    headerShown: false,
+                }}
+            />
+
 
         </Stack.Navigator>
     );

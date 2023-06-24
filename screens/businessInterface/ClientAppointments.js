@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar, Text, ScrollView, useWindowDimensions } from "react-native";
+import { View, StyleSheet, StatusBar, Text, ScrollView, useWindowDimensions,TouchableOpacity } from "react-native";
 import Card from '../../components/businessUIComponents/AppointmentCard.js';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { db, auth } from "../../firebase/FirebaseConfig.js";
@@ -8,6 +8,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { MaterialIcons } from '@expo/vector-icons'
 import { Ionicons } from "@expo/vector-icons/"
 
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 
 function Appointments({ navigation }) {
@@ -57,7 +58,7 @@ function Appointments({ navigation }) {
             <View >
                 {appointments ? appointments.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_pending === true
+                    appointments[index].status?.is_pending === true
                         && appointments[index].business_email == auth.currentUser.email ? (
                         <Card
                             title={item.service_name}
@@ -91,23 +92,70 @@ function Appointments({ navigation }) {
             <View >
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_completed === true
+                    appointments[index].status?.is_completed === true
                         && appointments[index].business_email == auth.currentUser.email ? (
-                        <Card
-                            title={item.service_name}
-                            customerName={item.customer_name}
-                            serviceName={item.service_name}
-                            customerEmail={item.customer_email}
-                            customerPhone={item.customer_phone}
-                            price={item.service_price}
-                            date={item.date}
-                            time={item.time}
-                            onPress={() => {
-                                console.log("Pressed");
-                            }}
-                            buttonText1="Edit"
-                            buttonText2="Cancel"
-                        />) : null
+                        <>
+                            {/* <Card
+                                title={item.service_name}
+                                customerName={item.customer_name}
+                                serviceName={item.service_name}
+                                customerEmail={item.customer_email}
+                                customerPhone={item.customer_phone}
+                                price={item.service_price}
+                                date={item.date}
+                                time={item.time}
+                                onPress={() => {
+                                    console.log("Pressed");
+                                }}
+                                buttonText1="Edit"
+                                buttonText2="Cancel"
+                            /> */}
+
+
+                            <TouchableOpacity
+                                // onPress={() => { navigation.navigate('TimeSheetView') }}
+                                style={{
+                                    marginVertical: 7, justifyContent: 'center', borderRadius: 10, shadowColor: '#000',
+                                    shadowOffset: { width: 0, height: 2 },
+                                    shadowOpacity: 0.5,
+                                    shadowRadius: 2,
+                                    elevation: 2, padding: 12, marginStart: 15, marginEnd: 15, backgroundColor: 'white'
+                                }}>
+
+                                <Text style={{  fontSize: 18, marginVertical: 3, color: 'black', marginBottom: 8 }}>{item.customer_name} </Text>
+                                <View style={{flexDirection:'row',backgroundColor:'#4cb7cb',alignItems:'center',borderRadius:40,padding:2}}>
+                                <Fontisto name='email' size={15} color={'white'} style={{flex:1,marginStart:10}} />
+                                <Text style={{  fontSize: 14,flex:9  }}>{item.customer_email}</Text>
+                                </View>
+                               
+                                <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'space-around' }}>
+                                    <View style={{ flexDirection: 'row', flex: .4, justifyContent: 'space-around', backgroundColor: '#4cb7cb', padding: 5, borderRadius: 5 }}>
+                                        <Fontisto name='date' size={15} color={'white'} />
+                                        <Text style={{  fontSize: 14, color: 'white' }}>{item.date}</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row', flex: .27, justifyContent: 'space-around', backgroundColor: '#4cb7cb', padding: 5, borderRadius: 5 }}>
+                                        <Fontisto name='clock' size={15} color={'white'} />
+                                        <Text style={{  fontSize: 14, color: 'white' }}>{item.time}</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row', flex: .27, justifyContent: 'space-around', backgroundColor:'#4cb7cb', padding: 5, borderRadius: 5 }}>
+                                        <Fontisto name='dollar' size={15} color={'white'} />
+                                        <Text style={{  fontSize: 14, color: 'white' }}>{item.service_price} Pkr</Text>
+                                    </View>
+
+                                </View>
+
+                                <View style={{ position: 'absolute', right: 1, top: 8 }}>
+                                    <Text style={{  fontSize: 14, flex: 0.23, backgroundColor: '#000', color: 'white', padding: 5, borderRadius: 30, paddingStart: 10, marginRight: 10, fontWeight: 'bold' }}>{item.service_name}</Text>
+                                </View>
+
+                            </TouchableOpacity>
+
+
+
+                        </>
+                    ) : null
                 ))}
 
             </View>
@@ -120,7 +168,7 @@ function Appointments({ navigation }) {
             <View >
                 {appointments?.map((item, index) => (
                     // <Text>{item.id}</Text>
-                    appointments[index].status.is_cancelled === true
+                    appointments[index].status?.is_cancelled === true
                         && appointments[index].business_email == auth.currentUser.email ? (
                         <Card
                             title={item.service_name}
@@ -187,4 +235,8 @@ const styles = StyleSheet.create({
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         // height: '80%',
     },
+
+    tabdesign:{
+        backgroundColor:'#fff'
+    }
 })

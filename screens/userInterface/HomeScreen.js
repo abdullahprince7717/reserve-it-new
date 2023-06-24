@@ -209,13 +209,44 @@ function HomeScreen(props) {
         <View style={styles.container}>
             <View style={styles.logo}>
                 <Image
-                    style={{ height: "140%" }}
+                    style={{ height: "100%", resizeMode: 'contain' }}
                     source={require("../../assets/homeLogo.png")}
                 />
             </View>
 
-            <View style={styles.scrollView}>
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        
+            <View style={{ flexDirection: 'row', margin:10 }}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                <TouchableOpacity >
+                    <View style={{ height: 80, width: 80, backgroundColor: '#57B9BB', borderRadius: 40,alignItems:'center' }}>
+                        <Image source={require('../../assets/doc-logo.jpg')} style={{ height: 80, width: 80, borderRadius: 40 }} />
+                        <Text style={{fontSize:12}} >Doctors</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginStart:5}}>
+                    <View style={{ height: 80, width: 80, backgroundColor: '#57B9BB', borderRadius: 40,alignItems:'center' }}>
+                        <Image source={require('../../assets/salon-logo.jpg')} style={{ height: 80, width: 80, borderRadius: 40,resizeMode:'contain' }} />
+                        <Text style={{fontSize:12}} >Salons</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginStart:5}}>
+                    <View style={{ height: 80, width: 80, backgroundColor: '#57B9BB', borderRadius: 40,alignItems:'center' }}>
+                        <Image source={require('../../assets/plate-logo.jpg')} style={{ height: 80, width: 80, borderRadius: 40,resizeMode:'contain' }} />
+                        <Text style={{fontSize:12}} >Restaurant</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginStart:5}}>
+                    <View style={{ height: 80, width: 80, backgroundColor: '#57B9BB', borderRadius: 40,alignItems:'center' }}>
+                        <Image source={require('../../assets/movies.jpeg')} style={{ height: 80, width: 80, borderRadius: 40,resizeMode:'contain' }} />
+                        <Text style={{fontSize:12}} >Movies</Text>
+                    </View>
+                </TouchableOpacity>
+                
+                </ScrollView>
+            </View>
+       
+
+            {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <TouchableOpacity
                         onPress={() => {
                             console.log("pressed");
@@ -261,8 +292,8 @@ function HomeScreen(props) {
                             name="Movie"
                         />
                     </TouchableOpacity>
-                </ScrollView>
-            </View>
+                </ScrollView> */}
+            {/* </View> */}
 
             <View style={styles.listView}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -298,21 +329,21 @@ function HomeScreen(props) {
 
                             </ScrollView>
                         </View> */}
-                        <View style={{ flexDirection: "row", marginTop: 20 }}>
-                            <Text style={{ fontSize: 25, color: "black", margin: 10 }}>
-                                Here are some popular Clinics{" "}
+                        <View style={{  marginTop:5 }}>
+                            <Text style={{ fontSize: 18, color: "black", marginStart: 10 }}>
+                                Businesses List{" "}
                             </Text>
                         </View>
                         <View
                             style={{
                                 backgroundColor: "#fff",
-                                marginTop: 10,
+
                                 flexDirection: "column",
                             }}
                         >
                             <ScrollView
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
+                                // horizontal={true}
+                                // showsHorizontalScrollIndicator={false}
                             >
                                 <TouchableOpacity
                                     onPress={() => {
@@ -348,8 +379,6 @@ const styles = StyleSheet.create({
     container: {
         display: "flex",
         height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         paddingBottom: 55,
         // backgroundColor: '#000',
@@ -363,12 +392,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#000",
     },
-    scrollView: {
-        flex: 2,
-        backgroundColor: "#000",
-        borderColor: "black",
-        borderWidth: 0.3,
-    },
+    
     listView: {
         flex: 5.5,
         width: deviceWidth - 5,
