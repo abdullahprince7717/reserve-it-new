@@ -212,24 +212,23 @@ const BusinessDetails = (props) => {
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
                                 <DropDownPicker
                                     open={open}
-                                    value={values.category}
+                                    value={category}
                                     items={items}
                                     setOpen={setOpen}
-                                    setValue={handleChange('category')}
-                                    onBlur={() => setFieldTouched('category')}
+                                    setValue={setCategory}
                                     setItems={setItems}
                                     style={{
                                         backgroundColor: "#E7E7E7",
                                         borderRadius: 5,
                                         height: 55,
-                                        marginBottom: open ? 100 : 20,
-                                        marginTop: 20,
-
+                                        zIndex: 99
                                     }}
                                     containerStyle={{
                                         width: '85%',
                                         alignItems: 'center',
                                         justifyContent: 'center',
+                                        marginTop: 30,
+                                        zIndex: 99
                                     }}
                                     textStyle={{
                                         fontSize: 15
@@ -237,6 +236,7 @@ const BusinessDetails = (props) => {
                                     labelStyle={{
                                         fontWeight: "bold"
                                     }}
+
                                 />
                             </View>
                             {touched.category && <Text style={{ color: 'red' }}>{errors.category}</Text>}
